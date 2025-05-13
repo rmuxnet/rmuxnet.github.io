@@ -234,7 +234,7 @@
             border-radius: 4px;
             width: 0%;
             position: relative;
-            transition: width 1s ease;
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .progress-fill::after {
             content: '';
@@ -659,6 +659,51 @@
             70% { opacity: 1; }
             100% { transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px)) rotate(-45deg); opacity: 0; }
         }
+        
+        /* Performance optimizations for scrolling */
+        @media (max-width: 600px) {
+            .stars-container {
+                opacity: 0.5; /* Reduce visual complexity on mobile */
+            }
+            
+            .glass-panel:hover {
+                transform: none; /* Disable hover animations on mobile for better scrolling */
+                border-color: #23242a;
+                box-shadow: var(--shadow);
+            }
+            
+            .card:hover {
+                transform: none; /* Disable hover animations on mobile for better scrolling */
+                border-color: #23242a;
+                box-shadow: 0 4px 32px #0006;
+            }
+            
+            /* Optimize animations on mobile */
+            .animate-in {
+                will-change: transform, opacity;
+            }
+        }
+        
+        /* Optimize rendering */
+        .main-content {
+            will-change: transform; /* Optimize for scrolling */
+        }
+        
+        /* Reduce animation complexity on mobile */
+        @media (max-width: 600px) {
+            @keyframes progress-shine {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+            }
+            
+            .profile-avatar {
+                animation: none; /* Disable float animation on mobile */
+            }
+            
+            .progress-fill::after {
+                animation-duration: 3s; /* Slow down animation on mobile */
+            }
+        }
     </style>
 </head>
 <body>
@@ -691,7 +736,7 @@
         <aside class="sidebar glass-panel" id="sidebar">
             <div class="logo-container">
                 <div style="width:100%;text-align:center;">
-                    <img src="https://c.tenor.com/5zXrJqmwmtMAAAAC/tenor.gif" alt="Profile picture" class="profile-avatar" loading="lazy" />
+                    <img src="https://c.tenor.com/5zXrJqmwmtMAAAAC/tenor.gif" alt="Profile picture" class="profile-avatar float-animation" loading="lazy" />
                     <div class="logo glow-text">rmux</div>
                     <div class="subtitle" style="color:#b0b0b8;opacity:0.8;">Android dumb Dev</div>
                 </div>
@@ -716,6 +761,10 @@
                     </div>
                 </div>
                 <nav>
+                    <a href="#about" class="nav-item">
+                        <i class="fas fa-user"></i>
+                        About Me
+                    </a>
                     <a href="#projects" class="nav-item">
                         <i class="fas fa-code"></i>
                         Projects
@@ -737,8 +786,26 @@
         </aside>
         <!-- Main Content -->
         <main class="main-content">
+            <!-- About Me Section -->
+            <section id="about" class="animate-in" style="animation-delay: 0.1s;">
+                <h2 class="glow-text">About Me</h2>
+                <div class="glass-panel about-container">
+                    <p class="about-text">
+                        <span class="about-accent">Kind of dumb, sometimes smart</span> - I honestly don't know what to write here but I do Android stuff :)
+                    </p>
+                    <p class="about-text" style="margin-top: 1rem;">
+                        I'm passionate about Android development and customization. From custom ROMs to kernels and recoveries, 
+                        I enjoy tinkering with Android devices to unlock their full potential.
+                    </p>
+                    <div class="about-highlight">
+                        <i class="fas fa-mobile-alt" style="margin-right: 0.5rem;"></i>
+                        Currently focused on Xiaomi Pad 6 development
+                    </div>
+                </div>
+            </section>
+            
             <!-- Projects Section -->
-            <section id="projects" class="animate-in" style="animation-delay: 0.2s;">
+            <section id="projects" class="animate-in" style="animation-delay: 0.2s; margin-top: 3rem;">
                 <h2 class="glow-text">Active Development</h2>
                 <div class="card-grid">
                     <div class="card">
@@ -837,74 +904,137 @@
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('skeleton-overlay').classList.add('hide');
-                // Animate progress bar (10/180 = 5.55%)
+                // Fix the progress bar calculation (50/180 = 27.78%)
                 const fill = document.getElementById('progress-fill');
-                fill.style.width = '5.55%';
+                fill.style.width = '27.78%';
             }, 900);
             
-            // Create stars animation
-            createStars();
+            // Create stars animation - only if not mobile
+            if (window.innerWidth > 600) {
+                createStars();
+            } else {
+                // Create fewer stars for mobile
+                createStars(true);
+            }
+            
+            // Initialize animations
+            initializeAnimations();
         });
         
-        // Theme Toggle
+        // Theme Toggle - Fixed
         const themeToggle = document.getElementById('theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light');
-            themeToggle.innerHTML = document.body.classList.contains('light')
-                ? '<i class="fas fa-sun"></i>'
-                : '<i class="fas fa-moon"></i>';
-            
-            // Update status indicator color based on theme
-            const statusIndicator = document.querySelector('.status-indicator');
-            if (document.body.classList.contains('light')) {
-                statusIndicator.style.background = '#111216';
-            } else {
-                statusIndicator.style.background = '#fafafa';
-            }
-        });
-        // Mobile Nav Toggle
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('light');
+                themeToggle.innerHTML = document.body.classList.contains('light')
+                    ? '<i class="fas fa-sun"></i>'
+                    : '<i class="fas fa-moon"></i>';
+                
+                // Update status indicator color based on theme
+                const statusIndicator = document.querySelector('.status-indicator');
+                if (statusIndicator) {
+                    if (document.body.classList.contains('light')) {
+                        statusIndicator.style.background = '#111216';
+                    } else {
+                        statusIndicator.style.background = '#fafafa';
+                    }
+                }
+                
+                // Recreate stars for theme change
+                setTimeout(createStars, 300);
+            });
+        }
+        
+        // Mobile Nav Toggle - Enhanced with error handling
         const sidebar = document.getElementById('sidebar');
         const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-        mobileNavToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
-                if (!sidebar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
-                    sidebar.classList.remove('active');
+        if (mobileNavToggle && sidebar) {
+            mobileNavToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Close sidebar when clicking outside
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 1024 && sidebar.classList.contains('active')) {
+                    if (!sidebar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+                        sidebar.classList.remove('active');
+                    }
                 }
-            }
-        });
-        // Scroll To Top Button
+            });
+        }
+        
+        // Scroll To Top Button - Enhanced
         const scrollBtn = document.getElementById('scroll-top-btn');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 200) {
-                scrollBtn.classList.add('show');
-            } else {
-                scrollBtn.classList.remove('show');
-            }
-        });
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-        // Matrix Background (disabled for black/gray theme)
-        // Copy crypto address to clipboard
+        if (scrollBtn) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) {
+                    scrollBtn.classList.add('show');
+                } else {
+                    scrollBtn.classList.remove('show');
+                }
+            });
+            
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+        
+        // Copy crypto address to clipboard - With better error handling
         document.querySelectorAll('.crypto-address').forEach(el => {
             el.addEventListener('click', function() {
                 const address = this.getAttribute('data-address');
-                navigator.clipboard.writeText(address);
-                this.classList.add('copied');
-                setTimeout(() => this.classList.remove('copied'), 1800);
+                if (address) {
+                    try {
+                        navigator.clipboard.writeText(address).then(() => {
+                            this.classList.add('copied');
+                            setTimeout(() => this.classList.remove('copied'), 1800);
+                        }).catch(err => {
+                            console.error('Could not copy text: ', err);
+                            showNotification('Failed to copy. Please try manually selecting and copying the address.');
+                        });
+                    } catch (err) {
+                        // Fallback for browsers that don't support clipboard API
+                        const textarea = document.createElement('textarea');
+                        textarea.value = address;
+                        textarea.style.position = 'fixed';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        try {
+                            document.execCommand('copy');
+                            this.classList.add('copied');
+                            setTimeout(() => this.classList.remove('copied'), 1800);
+                        } catch (e) {
+                            showNotification('Failed to copy. Please try manually selecting and copying the address.');
+                        }
+                        document.body.removeChild(textarea);
+                    }
+                }
             });
         });
         
-        // Create animated stars background - Enhanced
-        function createStars() {
+        // Notification helper function
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            if (notification) {
+                notification.textContent = message;
+                notification.classList.add('show');
+                setTimeout(() => notification.classList.remove('show'), duration);
+            }
+        }
+        
+        // Create animated stars background - Enhanced and optimized for mobile
+        function createStars(isMobile = false) {
             const starsContainer = document.getElementById('stars-container');
-            const starsCount = 250; // Increased number of stars
+            if (!starsContainer) return;
+            
+            // Significantly reduce stars and animations on mobile for better performance
+            const starsCount = isMobile ? 50 : 250;
             
             // Clear any existing stars
             starsContainer.innerHTML = '';
+            
+            // Use document fragment for better performance
+            const fragment = document.createDocumentFragment();
             
             for (let i = 0; i < starsCount; i++) {
                 const star = document.createElement('div');
@@ -926,20 +1056,26 @@
                 // Random opacity
                 star.style.opacity = 0.2 + Math.random() * 0.8;
                 
-                // Twinkle animation - faster
-                const animationDuration = 1 + Math.random() * 3; // Faster animation
-                star.style.animation = `twinkle ${animationDuration}s infinite alternate`;
+                // Only add animation to some stars, and none on mobile
+                if (!isMobile && i % 5 === 0) { // Even more limited - only 20% of stars twinkle
+                    const animationDuration = 1 + Math.random() * 3;
+                    star.style.animation = `twinkle ${animationDuration}s infinite alternate`;
+                }
                 
-                // Add to DOM
-                starsContainer.appendChild(star);
+                // Add to fragment
+                fragment.appendChild(star);
             }
             
-            // Add shooting stars
-            for (let i = 0; i < 5; i++) {
-                createShootingStar();
+            // Add all stars at once
+            starsContainer.appendChild(fragment);
+            
+            // Add shooting stars - but not on mobile
+            if (!isMobile) {
+                // Limit to just 1 shooting star for better performance
+                setTimeout(() => createShootingStar(), 2000);
             }
             
-            // Add twinkle keyframes dynamically
+            // Add twinkle keyframes dynamically if not already added
             if (!document.getElementById('twinkle-animation')) {
                 const style = document.createElement('style');
                 style.id = 'twinkle-animation';
@@ -954,9 +1090,14 @@
             }
         }
         
-        // Create shooting stars at random intervals
+        // Create shooting stars at random intervals - Optimized
         function createShootingStar() {
+            // Don't create shooting stars on mobile
+            if (window.innerWidth <= 600) return;
+            
             const starsContainer = document.getElementById('stars-container');
+            if (!starsContainer) return;
+            
             const shootingStar = document.createElement('div');
             shootingStar.classList.add('shooting-star');
             
@@ -978,56 +1119,108 @@
             
             // Remove after animation completes
             setTimeout(() => {
-                shootingStar.remove();
-                createShootingStar(); // Create a new one
+                if (shootingStar.parentNode === starsContainer) {
+                    starsContainer.removeChild(shootingStar);
+                }
+                
+                // Create new shooting star with longer delay on mobile
+                const nextStarDelay = 5000 + Math.random() * 5000; // 5-10 second delay
+                setTimeout(createShootingStar, nextStarDelay);
             }, duration * 1000);
         }
         
-        // Better mobile optimization by detecting orientation changes
-        window.addEventListener('orientationchange', () => {
-            setTimeout(createStars, 300);
-        });
-        
-        // Make sure crypto addresses are properly displayed on mobile
-        function adjustCryptoAddresses() {
+        // Initialize animations with IntersectionObserver for better performance
+        function initializeAnimations() {
+            // Use a simpler animation approach on mobile
             if (window.innerWidth <= 600) {
-                const addresses = document.querySelectorAll('.crypto-address .address');
-                addresses.forEach(addr => {
-                    const fullText = addr.textContent;
-                    if (fullText.length > 20) {
-                        const shortened = fullText.substring(0, 10) + '...' + fullText.substring(fullText.length - 10);
-                        addr.setAttribute('data-full', fullText);
-                        addr.textContent = shortened;
-                    }
+                // Just add the animate-in class with some delay
+                document.querySelectorAll('section').forEach((section, index) => {
+                    setTimeout(() => {
+                        section.classList.add('animate-in');
+                    }, index * 150);
                 });
-            } else {
-                const addresses = document.querySelectorAll('.crypto-address .address[data-full]');
-                addresses.forEach(addr => {
-                    addr.textContent = addr.getAttribute('data-full');
+                return;
+            }
+            
+            // Use IntersectionObserver on desktop
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-in');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -10% 0px' // Trigger slightly before element comes into view
+                });
+                
+                document.querySelectorAll('section').forEach(section => {
+                    section.classList.remove('animate-in');
+                    observer.observe(section);
                 });
             }
         }
         
-        // Call on load and resize
-        window.addEventListener('DOMContentLoaded', adjustCryptoAddresses);
-        window.addEventListener('resize', adjustCryptoAddresses);
-        
-        // Fix theme toggle and mobile navigation button positioning on scroll
-        window.addEventListener('scroll', () => {
-            if (window.innerWidth <= 1024) {
-                const scrollY = window.scrollY;
-                const themeToggle = document.getElementById('theme-toggle');
-                const mobileNav = document.getElementById('mobile-nav-toggle');
+        // Better mobile optimization - Enhanced with better debouncing
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                // Only adjust addresses - on mobile we don't recreate stars to save performance
+                adjustCryptoAddresses();
                 
-                if (scrollY > 50) {
-                    themeToggle.style.backgroundColor = 'rgba(24, 25, 29, 0.9)';
-                    mobileNav.style.backgroundColor = 'rgba(24, 25, 29, 0.9)';
-                } else {
-                    themeToggle.style.backgroundColor = '';
-                    mobileNav.style.backgroundColor = '';
+                // Update stars only if switching between mobile/desktop
+                const wasMobile = window.innerWidth <= 600;
+                const isMobile = window.innerWidth <= 600;
+                
+                if (wasMobile !== isMobile) {
+                    createStars(isMobile);
                 }
-            }
+            }, 500); // Longer timeout for better performance
+        }, {passive: true});
+        
+        // Smooth scrolling for navigation links - optimized for mobile
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Close sidebar on mobile if open
+                    if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                    }
+                    
+                    // Use simpler scrolling on mobile
+                    if (window.innerWidth <= 600) {
+                        window.scrollTo(0, targetElement.offsetTop - 20);
+                    } else {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
         });
+        
+        // Remove unnecessary event listeners and throttle others
+        
+        // Call on load with throttling
+        window.addEventListener('DOMContentLoaded', () => {
+            // Delay non-critical operations
+            setTimeout(() => {
+                adjustCryptoAddresses();
+            }, 1000);
+        });
+        
+        // Remove duplicate resize listener and just use one
+        
+        // Remove the duplicate scroll listener and rely on the passive one above
     </script>
 </body>
 </html>
