@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rmux // Android Development</title>
+    <!-- Preconnect to external resources for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <meta name="theme-color" content="#111216">
@@ -475,10 +479,20 @@
             box-shadow: 0 4px 15px #0006;
             transition: all 0.3s ease;
         }
+        
+        .mobile-nav-toggle i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        
         .mobile-nav-toggle:hover {
             background: #23242a;
             color: #fff;
         }
+        
         .system-status {
             position: fixed;
             bottom: 1.5rem;
@@ -618,6 +632,78 @@
             color: #23242a;
         }
         
+        /* Fix theme toggle button styling and positioning */
+        .theme-toggle {
+            position: fixed;
+            top: 1.2rem;
+            left: 1.2rem;
+            z-index: 1001;
+            border: 2px solid #23242a;
+            color: #fafafa;
+            background: #18191d;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px #0006;
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            background: #23242a;
+            color: #fff;
+        }
+        
+        /* Fix mobile navigation toggle styling */
+        .mobile-nav-toggle {
+            position: fixed;
+            top: 1.2rem;
+            right: 1.2rem;
+            z-index: 1001;
+            border: 2px solid #23242a;
+            color: #fafafa;
+            background: #18191d;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px #0006;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-nav-toggle i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .mobile-nav-toggle:hover {
+            background: #23242a;
+            color: #fff;
+        }
+        
+        /* On mobile, adjust positioning to avoid overlap */
+        @media (max-width: 600px) {
+            .theme-toggle {
+                top: 1.2rem;
+                left: 1.2rem;
+            }
+            
+            .mobile-nav-toggle {
+                top: 1.2rem;
+                right: 1.2rem;
+            }
+        }
+        
         /* Stars Background - Enhanced */
         .stars-container {
             position: fixed;
@@ -753,11 +839,11 @@
                     <div style="margin-top:1rem;">
                         <div style="color:var(--text-muted);font-size:0.98rem;font-weight:600;">Thanks for the donators below;</div>
                         <ul style="list-style:none;padding:0;margin:0.5rem 0 0 0;">
-                            <li style="color:var(--primary);margin-bottom:2px;">1- <b>@thisisstheway</b> - <span style="color:var(--text);">5€</span></li>
-                            <li style="color:var(--primary);">2- <b>@alexbudi</b> - <span style="color:var(--text);">5€</span></li>
+                            <li style="color:var(--primary);margin-bottom:2px;">1- <b>thisisstheway</b> - <span style="color:var(--text);">5€</span></li>
+                            <li style="color:var(--primary);">2- <b>alexbudi</b> - <span style="color:var(--text);">5€</span></li>
                             <li style="color:var(--primary);">3- <b>Kirk</b> - <span style="color:var(--text);">10€</span></li>
-                            <li style="color:var(--primary);">4- <b>@Br4no</b> - <span style="color:var(--text);">30€</span></li>
-                            <li style="color:var(--primary);">5- <b>@Dark1638</b> - <span style="color:var(--text);">16€</span></li>
+                            <li style="color:var(--primary);">4- <b>Br4no</b> - <span style="color:var(--text);">30€</span></li>
+                            <li style="color:var(--primary);">5- <b>Dark1638</b> - <span style="color:var(--text);">16€</span></li>
                         </ul>
                     </div>
                 </div>
@@ -863,6 +949,14 @@
                         <a href="https://ko-fi.com/mx7111" class="neon-button"><i class="fas fa-coffee"></i> Ko-Fi</a>
                         <a href="https://paypal.me/boalathegod" class="neon-button"><i class="fab fa-paypal"></i> PayPal</a>
                     </div>
+                    <div style="margin-top: 1.5rem;">
+                        <h4 style="margin-bottom: 0.75rem;">UPI</h4>
+                        <div data-address="arkangel@upi" class="crypto-address">
+                            <span class="icon"><i class="fas fa-rupee-sign"></i></span>
+                            <span class="address">arkangel@upi</span>
+                            <span class="copy-icon"><i class="fas fa-copy"></i></span>
+                        </div>
+                    </div>
                 </div>
             </section>
             <!-- Contact Section -->
@@ -905,9 +999,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 document.getElementById('skeleton-overlay').classList.add('hide');
-                // Fix the progress bar calculation (50/180 = 27.78%)
+                // Fix the progress bar calculation (66/180 = 36.67%)
                 const fill = document.getElementById('progress-fill');
-                fill.style.width = '27.78%';
+                fill.style.width = '36.67%';
             }, 900);
             
             // Create stars animation - only if not mobile
@@ -1164,52 +1258,29 @@
             }
         }
         
-        // Better mobile optimization - Enhanced with better debouncing
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                // Only adjust addresses - on mobile we don't recreate stars to save performance
-                adjustCryptoAddresses();
+        // Function to adjust crypto addresses for different screen sizes
+        function adjustCryptoAddresses() {
+            const cryptoAddresses = document.querySelectorAll('.crypto-address .address');
+            const isMobile = window.innerWidth <= 600;
+            
+            cryptoAddresses.forEach(addressElement => {
+                const fullAddress = addressElement.getAttribute('data-full-address') || addressElement.textContent;
                 
-                // Update stars only if switching between mobile/desktop
-                const wasMobile = window.innerWidth <= 600;
-                const isMobile = window.innerWidth <= 600;
-                
-                if (wasMobile !== isMobile) {
-                    createStars(isMobile);
+                // Store full address if we haven't already
+                if (!addressElement.getAttribute('data-full-address')) {
+                    addressElement.setAttribute('data-full-address', fullAddress);
                 }
-            }, 500); // Longer timeout for better performance
-        }, {passive: true});
-        
-        // Smooth scrolling for navigation links - optimized for mobile
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
                 
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    // Close sidebar on mobile if open
-                    if (window.innerWidth <= 1024 && sidebar && sidebar.classList.contains('active')) {
-                        sidebar.classList.remove('active');
-                    }
-                    
-                    // Use simpler scrolling on mobile
-                    if (window.innerWidth <= 600) {
-                        window.scrollTo(0, targetElement.offsetTop - 20);
-                    } else {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 20,
-                            behavior: 'smooth'
-                        });
-                    }
+                // Truncate addresses on mobile
+                if (isMobile) {
+                    const truncated = fullAddress.substring(0, 6) + '...' + 
+                                     fullAddress.substring(fullAddress.length - 4);
+                    addressElement.textContent = truncated;
+                } else {
+                    addressElement.textContent = fullAddress;
                 }
             });
-        });
-        
-        // Remove unnecessary event listeners and throttle others
+        }
         
         // Call on load with throttling
         window.addEventListener('DOMContentLoaded', () => {
