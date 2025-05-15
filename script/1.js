@@ -29,7 +29,7 @@
         },
         pad6: {
             name: "Xiaomi Pad 6",
-            img: "https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-pad-6-1.jpg",
+            img: "https://i.ibb.co/MycBsvc0/1-41-removebg-preview.png",
             specs: {
                 "Processor": "Qualcomm Snapdragon 870 5G",
                 "RAM": "8GB",
@@ -237,4 +237,23 @@
         el.style.opacity = 0;
         el.style.animationDelay = `${0.2 + (index * 0.1)}s`;
         observer.observe(el);
+    });
+
+    // Fade-in body on load
+    document.body.classList.add('fadein-body');
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.body.classList.remove('fadein-body');
+        }, 100);
+    });
+
+    // Add shimmer effect to device images while loading
+    document.querySelectorAll('.device-image img').forEach(img => {
+        img.classList.add('img-loading');
+        img.addEventListener('load', () => {
+            img.classList.remove('img-loading');
+        });
+        img.addEventListener('error', () => {
+            img.classList.remove('img-loading');
+        });
     });
