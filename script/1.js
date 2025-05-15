@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Skeleton loading
     setTimeout(() => {
-        document.getElementById('skeleton-overlay')?.classList.add('hide');
-        document.getElementById('progress-fill').style.width = '70.7%';
+        const skeletonOverlay = document.getElementById('skeleton-overlay');
+        const progressFill = document.getElementById('progress-fill');
+        if (skeletonOverlay) skeletonOverlay.classList.add('hide');
+        if (progressFill) progressFill.style.width = '70.7%';
     }, 900);
 
     // Stars animation
@@ -13,17 +15,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
-    themeToggle?.addEventListener('click', handleThemeToggle);
+    if (themeToggle) {
+        themeToggle.addEventListener('click', handleThemeToggle);
+    }
 
     // Mobile nav toggle
     const sidebar = document.getElementById('sidebar');
     const mobileNavToggle = document.getElementById('mobile-nav-toggle');
-    mobileNavToggle?.addEventListener('click', () => sidebar?.classList.toggle('active'));
-    document.addEventListener('click', (e) => {
-        if (sidebar?.classList.contains('active') && !sidebar.contains(e.target) && !mobileNavToggle.contains(e.target)) {
-            sidebar.classList.remove('active');
-        }
-    });
+    if (mobileNavToggle && sidebar) {
+        mobileNavToggle.addEventListener('click', () => sidebar.classList.toggle('active'));
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                mobileNavToggle && !mobileNavToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    }
 
     // Scroll to top button
     const scrollBtn = document.getElementById('scroll-top-btn');
@@ -44,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.classList.add('copied');
                 showNotification('Address copied to clipboard!');
                 setTimeout(() => this.classList.remove('copied'), 2000);
-            } catch {
+            } catch (error) {
                 showNotification('Failed to copy address.', 2000);
             }
         });
@@ -57,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Helper functions
 function handleThemeToggle() {
     const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
+    
     document.body.classList.toggle('light');
     themeToggle.innerHTML = document.body.classList.contains('light')
         ? '<i class="fas fa-sun"></i>'
@@ -121,9 +131,22 @@ function setupDeviceModal() {
     const modalTitle = document.getElementById('modal-title');
     const modalBody = document.getElementById('modal-body');
     const modalClose = document.getElementById('modal-close');
+    
+    if (!modal || !modalTitle || !modalBody || !modalClose) return;
 
     const deviceSpecs = {
-        // Device data here...
+        // Add your device specs here, example:
+        "workstation": {
+            name: "Workstation",
+            img: "path/to/workstation.jpg",
+            specs: {
+                "CPU": "Intel i9-12900K",
+                "GPU": "NVIDIA RTX 3080",
+                "RAM": "32GB DDR5",
+                "Storage": "2TB NVMe SSD"
+            }
+        },
+        // Add more devices as needed
     };
 
     function openDeviceModal(deviceId) {
