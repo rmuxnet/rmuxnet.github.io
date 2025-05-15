@@ -790,6 +790,228 @@
                 animation-duration: 3s; /* Slow down animation on mobile */
             }
         }
+        
+        /* Device Inventory Styles */
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .device-card {
+            background: var(--card-gradient), var(--surface);
+            border: 1.5px solid #23242a;
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-shadow: var(--shadow);
+        }
+        
+        .device-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--secondary);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .device-img-container {
+            height: 220px;
+            overflow: hidden;
+            background: #111216;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 1rem;
+        }
+        
+        .device-img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        
+        .device-card:hover .device-img {
+            transform: scale(1.05);
+        }
+        
+        .device-info {
+            padding: 1.2rem;
+        }
+        
+        .device-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .device-status {
+            font-size: 0.8rem;
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-active {
+            background: rgba(67, 233, 123, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(67, 233, 123, 0.3);
+        }
+        
+        .status-coming {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+        
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-container {
+            background: var(--surface);
+            border: 1.5px solid #23242a;
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.4s, opacity 0.4s;
+        }
+        
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem;
+            border-bottom: 1px solid #23242a;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+        
+        .modal-close:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+            background: #111216;
+            border-radius: calc(var(--radius) / 2);
+        }
+        
+        .spec-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .spec-item {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(97, 97, 97, 0.2);
+            padding-bottom: 1rem;
+        }
+        
+        .spec-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .spec-label {
+            flex: 0 0 130px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .spec-value {
+            flex: 1;
+            color: var(--text);
+        }
+        
+        @media (max-width: 600px) {
+            .device-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 1rem;
+            }
+            
+            .device-img-container {
+                height: 180px;
+                padding: 0.5rem;
+            }
+            
+            .spec-item {
+                flex-direction: column;
+            }
+            
+            .spec-label {
+                margin-bottom: 0.25rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -857,6 +1079,10 @@
                         <i class="fas fa-code"></i>
                         Projects
                     </a>
+                    <a href="#devices" class="nav-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        Devices
+                    </a>
                     <a href="#support" class="nav-item">
                         <i class="fas fa-heart"></i>
                         Support
@@ -919,6 +1145,75 @@
                             <li class="terminal-text">Rμxne (Xiaomi Pad 6)</li>
                             <li class="terminal-text">Rμxne (Samsung Galaxy A71)</li>
                         </ul>
+                    </div>
+                </div>
+            </section>
+            <!-- Device Inventory Section -->
+            <section id="devices" class="animate-in" style="animation-delay: 0.3s; margin-top: 3rem;">
+                <h2 class="glow-text">Device Inventory</h2>
+                <div class="glass-panel">
+                    <p>Here are the devices I currently work with for development, testing, and daily use.</p>
+                    
+                    <div class="device-grid">
+                        <!-- Xiaomi Redmi 12 -->
+                        <div class="device-card" data-device="redmi12">
+                            <div class="device-img-container">
+                                <img src="https://media.croma.com/image/upload/v1708666027/Croma%20Assets/Communication/Mobiles/Images/275526_0_pnndxh.png" alt="Xiaomi Redmi 12" class="device-img">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Xiaomi Redmi 12</div>
+                                <span class="device-status status-active">Active</span>
+                                <div class="terminal-text">Click for specs</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Samsung Galaxy A71 -->
+                        <div class="device-card" data-device="a71">
+                            <div class="device-img-container">
+                                <img src="https://wiki.lineageos.org/images/devices/a71.png" alt="Samsung Galaxy A71" class="device-img">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Samsung Galaxy A71</div>
+                                <span class="device-status status-active">Active</span>
+                                <div class="terminal-text">Click for specs</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Xiaomi Pad 6 -->
+                        <div class="device-card" data-device="pad6">
+                            <div class="device-img-container">
+                                <img src="https://i.ibb.co/MycBsvc0/1-41-removebg-preview.png" alt="Xiaomi Pad 6" class="device-img">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Xiaomi Pad 6</div>
+                                <span class="device-status status-coming">Coming Soon</span>
+                                <div class="terminal-text">Thanks to your support ❤</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Google Pixel 6 Pro -->
+                        <div class="device-card" data-device="pixel6pro">
+                            <div class="device-img-container">
+                                <img src="https://wiki.lineageos.org/images/devices/raven.png" alt="Google Pixel 6 Pro" class="device-img">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Google Pixel 6 Pro</div>
+                                <span class="device-status status-coming">Coming Soon</span>
+                                <div class="terminal-text">Click for specs</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Lenovo ThinkPad L480 -->
+                        <div class="device-card" data-device="thinkpadl480">
+                            <div class="device-img-container">
+                                <img src="https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8NjkwOTl8aW1hZ2UvcG5nfGhkNS9oYjYvOTYwOTE4NDc3MjEyNi5wbmd8ZDMxMWE2M2EyNDVhMmI3MGJhYjBkODUwYjRkM2YwODIwNDQ0NjVlNDM0ZmI5Njg1MGE5MTBkMGZjOWU1YTMxZQ/lenovo-laptop-thinkpad-l480-hero.png" alt="Lenovo ThinkPad L480" class="device-img">
+                            </div>
+                            <div class="device-info">
+                                <div class="device-name">Lenovo ThinkPad L480</div>
+                                <span class="device-status status-active">Active</span>
+                                <div class="terminal-text">Click for specs</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -995,6 +1290,18 @@
     <button class="scroll-top-btn" id="scroll-top-btn" aria-label="Scroll to top">
         <i class="fas fa-arrow-up"></i>
     </button>
+    <!-- Device Specs Modal -->
+    <div class="modal-overlay" id="device-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Device Name</h3>
+                <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
     <script>
         // Loading Skeleton
         window.addEventListener('DOMContentLoaded', () => {
@@ -1294,6 +1601,147 @@
         // Remove duplicate resize listener and just use one
         
         // Remove the duplicate scroll listener and rely on the passive one above
+        
+        // Device Inventory Modal System
+        document.addEventListener('DOMContentLoaded', () => {
+            // Device specs data
+            const deviceSpecs = {
+                redmi12: {
+                    name: "Xiaomi Redmi 12",
+                    img: "https://media.croma.com/image/upload/v1708666027/Croma%20Assets/Communication/Mobiles/Images/275526_0_pnndxh.png",
+                    specs: {
+                        "Processor": "MediaTek Helio G88",
+                        "RAM": "8GB",
+                        "Storage": "256GB, expandable via microSD",
+                        "Display": "6.79\" FHD+ LCD, 90Hz refresh rate",
+                        "Camera": "50MP main + 8MP ultra-wide + 2MP macro",
+                        "Battery": "5000mAh, 18W fast charging",
+                        "OS": "HyperOS 2 (Global) Android 15"
+                    }
+                },
+                a71: {
+                    name: "Samsung Galaxy A71",
+                    img: "https://wiki.lineageos.org/images/devices/a71.png",
+                    specs: {
+                        "Processor": "Qualcomm Snapdragon 730",
+                        "RAM": "8GB",
+                        "Storage": "128GB, expandable via microSD",
+                        "Display": "6.7\" Super AMOLED, FHD+",
+                        "Camera": "64MP main + 12MP ultra-wide + 5MP macro + 5MP depth",
+                        "Battery": "4500mAh, 25W fast charging",
+                        "OS": "AxionAOSP 1.4"
+                    }
+                },
+                pad6: {
+                    name: "Xiaomi Pad 6",
+                    img: "https://i.ibb.co/MycBsvc0/1-41-removebg-preview.png",
+                    specs: {
+                        "Processor": "Qualcomm Snapdragon 870 5G",
+                        "RAM": "8GB",
+                        "Storage": "256GB",
+                        "Display": "11\" 2.8K LCD, 144Hz refresh rate",
+                        "Camera": "13MP rear, 8MP front",
+                        "Battery": "8840mAh, 33W fast charging",
+                        "OS": "AxionAOSP 1.4",
+                        "Status": "Coming soon thanks to your support ❤"
+                    }
+                },
+                pixel6pro: {
+                    name: "Google Pixel 6 Pro",
+                    img: "https://wiki.lineageos.org/images/devices/raven.png",
+                    specs: {
+                        "Processor": "Google Tensor",
+                        "RAM": "12GB",
+                        "Storage": "128GB",
+                        "Display": "6.7\" QHD+ LTPO OLED, 120Hz refresh rate",
+                        "Camera": "50MP main + 12MP ultra-wide + 48MP telephoto (4x optical zoom)",
+                        "Battery": "5003mAh, 30W fast charging, wireless charging",
+                        "OS": "AxionAOSP 1.5",
+                        "Status": "Coming soon!"
+                    }
+                },
+                thinkpadl480: {
+                    name: "Lenovo ThinkPad L480",
+                    img: "https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8NjkwOTl8aW1hZ2UvcG5nfGhkNS9oYjYvOTYwOTE4NDc3MjEyNi5wbmd8ZDMxMWE2M2EyNDVhMmI3MGJhYjBkODUwYjRkM2YwODIwNDQ0NjVlNDM0ZmI5Njg1MGE5MTBkMGZjOWU1YTMxZQ/lenovo-laptop-thinkpad-l480-hero.png",
+                    specs: {
+                        "Processor": "Intel Core i5-8250U",
+                        "RAM": "16GB DDR4",
+                        "Storage": "512GB SSD",
+                        "Display": "14\" FHD (1920x1080)",
+                        "Graphics": "Intel UHD Graphics 620",
+                        "Battery": "45Wh, up to 12 hours",
+                        "OS": "Windows 10 / Arch Dual boot"
+                    }
+                }
+            };
+            
+            const modal = document.getElementById('device-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const modalClose = document.getElementById('modal-close');
+            
+            // Open modal with device info
+            function openDeviceModal(deviceId) {
+                const device = deviceSpecs[deviceId];
+                
+                if (!device) return;
+                
+                modalTitle.textContent = device.name;
+                
+                // Build modal content
+                let content = `
+                    <img src="${device.img}" alt="${device.name}" class="modal-img">
+                    <ul class="spec-list">
+                `;
+                
+                // Add all specs
+                for (const [key, value] of Object.entries(device.specs)) {
+                    content += `
+                        <li class="spec-item">
+                            <div class="spec-label">${key}</div>
+                            <div class="spec-value">${value}</div>
+                        </li>
+                    `;
+                }
+                
+                content += `</ul>`;
+                modalBody.innerHTML = content;
+                
+                // Show modal
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+            
+            // Close modal
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            document.querySelectorAll('.device-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const deviceId = card.getAttribute('data-device');
+                    openDeviceModal(deviceId);
+                });
+            });
+            
+            modalClose.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+        });
     </script>
 </body>
 </html>
