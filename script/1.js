@@ -38,7 +38,7 @@
                 "Camera": "13MP rear, 8MP front",
                 "Battery": "8840mAh, 33W fast charging",
                 "OS": "AxionAOSP 1.4",
-                "Status": "Coming soon thanks to your support ❤"
+                "Status": "5 HRS left till pickup thanks to your support ❤"
             }
         },
         pixel6pro: {
@@ -66,6 +66,20 @@
                 "Graphics": "Intel UHD Graphics 620",
                 "Battery": "45Wh, up to 12 hours",
                 "OS": "Windows 10 / Arch Dual boot"
+            }
+        },
+        newdevice: {
+            name: "Mistery Device",
+            img: "https://pngimg.com/d/question_mark_PNG91.png",
+            specs: {
+                "Processor": "Qualcomm Snapdragon 870",
+                "RAM": "8GB",
+                "Storage": "256GB",
+                "Display": "6.7\" 120Hz OLED",
+                "Camera": "???",
+                "Battery": "???",
+                "OS": "???",
+                "Status": "Coming soon! Stay tuned."
             }
         }
     };
@@ -247,13 +261,13 @@
         }, 100);
     });
 
-    // Add shimmer effect to device images while loading
-    document.querySelectorAll('.device-image img').forEach(img => {
-        img.classList.add('img-loading');
-        img.addEventListener('load', () => {
-            img.classList.remove('img-loading');
-        });
-        img.addEventListener('error', () => {
-            img.classList.remove('img-loading');
-        });
-    });
+    // Remove shimmer effect for image loading
+    // document.querySelectorAll('.device-image img').forEach(img => {
+    //     img.classList.add('img-loading');
+    //     img.addEventListener('load', () => {
+    //         img.classList.remove('img-loading');
+    //     });
+    //     img.addEventListener('error', () => {
+    //         img.classList.remove('img-loading');
+    //     });
+    // });
