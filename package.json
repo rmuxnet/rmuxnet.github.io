@@ -1,0 +1,74 @@
+{
+  "name": "rmux-website",
+  "version": "1.0.0",
+  "description": "Modern, responsive website for rmux - Android ROM Developer",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "dev": "live-server --port=3000 --open=/",
+    "build": "echo 'No build step required for static site'",
+    "test": "echo 'No tests specified'",
+    "lint": "echo 'No linting configured'",
+    "format": "prettier --write .",
+    "optimize": "echo 'Optimizing images and assets...'",
+    "deploy": "echo 'Deploy to GitHub Pages or your hosting provider'",
+    "analyze": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html"
+  },
+  "keywords": [
+    "android",
+    "rom",
+    "developer",
+    "website",
+    "material-you",
+    "pwa",
+    "responsive",
+    "modern"
+  ],
+  "author": {
+    "name": "rmux",
+    "email": "contact@rmux.me",
+    "url": "https://rmux.me"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rmuxnet/rmux.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rmuxnet/rmux.github.io/issues"
+  },
+  "homepage": "https://rmux.me",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1",
+    "prettier": "^3.1.0",
+    "lighthouse": "^11.4.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "pwa": {
+    "name": "rmux - Android ROM Developer",
+    "short_name": "rmux",
+    "description": "Professional Android ROM developer specializing in custom ROMs, recoveries, and kernels",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0A0A0A",
+    "theme_color": "#6750A4",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en",
+    "categories": ["developer", "technology", "android"]
+  },
+  "config": {
+    "port": 3000,
+    "host": "localhost"
+  }
+}

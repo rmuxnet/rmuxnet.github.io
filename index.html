@@ -3,116 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="rmux - Android ROM Developer specializing in custom ROMs, recoveries, and kernels">
+    <meta name="keywords" content="Android, ROM, custom ROM, recovery, kernel, development">
+    <meta name="author" content="rmux">
+    <meta name="theme-color" content="#6750A4">
+    <meta name="msapplication-TileColor" content="#6750A4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="rmux">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rmux.me/">
+    <meta property="og:title" content="rmux - Android ROM Developer">
+    <meta property="og:description" content="Professional Android ROM developer specializing in custom ROMs, recoveries, and kernels">
+    <meta property="og:image" content="https://rmux.me/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://rmux.me/">
+    <meta property="twitter:title" content="rmux - Android ROM Developer">
+    <meta property="twitter:description" content="Professional Android ROM developer specializing in custom ROMs, recoveries, and kernels">
+    <meta property="twitter:image" content="https://rmux.me/og-image.png">
+    
     <title>rmux - Android ROM Developer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Material You 2 Design System -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style/1.css">
+    <link rel="stylesheet" href="style/animations.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236750A4'/><text y='.9em' font-size='60' text-anchor='middle' x='50' fill='white'>🤖</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%236750A4'/><text y='.9em' font-size='100' text-anchor='middle' x='90' fill='white'>🤖</text></svg>">
 </head>
 <body>
-    <header id="header" class="bg-gray-900 text-white shadow-lg fixed w-full z-50 top-0">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <nav class="flex items-center justify-between h-16">
-                <a href="#" class="logo text-2xl font-bold">rmux<span class="text-blue-500">.</span></a>
-                <ul class="nav-links hidden md:flex space-x-6" id="navLinks">
-                    <li><a href="#about" class="hover:text-blue-400 transition-colors duration-300">About</a></li>
-                    <li><a href="#projects" class="hover:text-blue-400 transition-colors duration-300">Projects</a></li>
-                    <li><a href="#devices" class="hover:text-blue-400 transition-colors duration-300">Devices</a></li>
-                    <li><a href="#support" class="hover:text-blue-400 transition-colors duration-300">Support</a></li>
-                    <li><a href="#contact" class="hover:text-blue-400 transition-colors duration-300">Contact</a></li>
-                </ul>
-                <button class="mobile-nav-toggle md:hidden text-white focus:outline-none p-2 rounded hover:bg-gray-700 transition-colors duration-300" id="mobileNavToggle" aria-label="Toggle menu">
-                    <i class="fas fa-bars text-xl"></i>
-                </button>
-            </nav>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="#" class="brand-link">
+                    <span class="brand-icon">🤖</span>
+                    <span class="brand-text">rmux<span class="brand-dot">.</span></span>
+                </a>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#devices" class="nav-link">Devices</a>
+                <a href="#support" class="nav-link">Support</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="pt-16">
-        <section class="hero bg-gray-800 text-white py-16 md:py-24" id="about">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="about">
+            <div class="hero-container">
                 <div class="hero-content">
-                    <div class="profile-image-container animate">
-                        <div class="profile-image">
-                            <img src="https://c.tenor.com/5zXrJqmwmtMAAAAC/tenor.gif" alt="rmux profile">
+                    <div class="hero-text">
+                        <div class="hero-badge">
+                            <i class="fas fa-code"></i>
+                            <span>Android Developer</span>
+                        </div>
+                        
+                        <h1 class="hero-title">
+                            Building the future of
+                            <span class="gradient-text">Android</span>
+                        </h1>
+                        
+                        <p class="hero-description">
+                            Passionate developer creating custom ROMs, recoveries, and kernels. 
+                            Transforming Android devices with innovative solutions and cutting-edge technology.
+                        </p>
+                        
+                        <div class="hero-actions">
+                            <a href="#projects" class="btn btn-primary">
+                                <i class="fas fa-rocket"></i>
+                                View Projects
+                            </a>
+                            <a href="#contact" class="btn btn-secondary">
+                                <i class="fas fa-envelope"></i>
+                                Get in Touch
+                            </a>
                         </div>
                     </div>
-                    <div class="profile-info">
-                        <div class="profile-title animate delay-1">
-                            <h1>rmux</h1>
-                            <h2>Android ROM Developer</h2>
+                    
+                    <div class="hero-visual">
+                        <div class="hero-image-container">
+                            <div class="hero-image">
+                                <img src="https://c.tenor.com/5zXrJqmwmtMAAAAC/tenor.gif" alt="rmux profile" loading="lazy">
+                            </div>
+                            <div class="hero-image-glow"></div>
                         </div>
-                        <div class="profile-description animate delay-2">
-                            <p>Kind of dumb, sometimes smart - I honestly don't know what to write here but I do Android stuff :)</p>
-                            <p>I'm passionate about <span class="highlight">Android development and customization</span>. From custom ROMs to kernels and recoveries, I enjoy tinkering with Android OS to make it work the way I prefer.</p>
-                            <p>Currently focused on <span class="highlight">AOSP-based ROM development</span>.</p>
-                        </div>
-                        <div class="animate delay-3">
-                            <div class="donation-card">
-                                <h3 class="donation-title">
-                                    <i class="fas fa-heart"></i>
-                                    Support My Work
-                                </h3>
-                                <div class="donation-progress">
-                                    <div class="progress-info">
-                                        <span>Xiaomi Pad 6 Fund</span>
-                                        <span>€130/€130</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 100%;"></div>
-                                    </div>
-                                </div>
-                                <p><b>Fund Complete!</b> Thanks to all donators &lt;3</p>
-                                <ul class="donation-list">
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            thisisstheway
-                                        </div>
-                                        <div class="donation-amount">5€</div>
-                                    </li>
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            alexbudi
-                                        </div>
-                                        <div class="donation-amount">5€</div>
-                                    </li>
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            Kirk
-                                        </div>
-                                        <div class="donation-amount">10€</div>
-                                    </li>
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            Br4no
-                                        </div>
-                                        <div class="donation-amount">30€</div>
-                                    </li>
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            Dark1638
-                                        </div>
-                                        <div class="donation-amount">16€</div>
-                                    </li>
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            David Martin
-                                        </div>
-                                        <div class="donation-amount">33€</div>
-                                    </li>
-                                    <li class="donation-item">
-                                        <div class="donor-name">
-                                            <i class="fas fa-user"></i>
-                                            ionizerMIK
-                                        </div>
-                                        <div class="donation-amount">5€</div>
-                                    </li>
-                                </ul>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">10+</div>
+                                <div class="stat-label">Projects</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">5+</div>
+                                <div class="stat-label">Devices</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">Passion</div>
                             </div>
                         </div>
                     </div>
@@ -120,273 +132,403 @@
             </div>
         </section>
 
-        <section class="section" id="projects">
+        <!-- Projects Section -->
+        <section class="section projects-section" id="projects">
             <div class="container">
-                <div class="projects-section-title">
-                    <h2>My Ongoing Projects</h2>
-                    <p>Current development work across recoveries, ROMs, and kernels</p>
+                <div class="section-header">
+                    <h2 class="section-title">Featured Projects</h2>
+                    <p class="section-subtitle">Discover my latest work in Android development</p>
                 </div>
+                
                 <div class="projects-grid">
-                    <div class="project-card">
-                        <h3 class="project-card-title">
-                            <i class="fas fa-sync-alt"></i>
-                            Recoveries
-                        </h3>
-                        <ul class="project-list">
-                            <li class="project-item">TWRP for Xiaomi Pad 6</li>
-                            <li class="project-item">OFOX for Xiaomi Pad 6</li>
-                            <li class="project-item">TWRP for Samsung Galaxy A71</li>
-                        </ul>
+                    <div class="project-card" data-category="recovery">
+                        <div class="project-header">
+                            <div class="project-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="project-badge">Recovery</div>
+                        </div>
+                        
+                        <h3 class="project-title">Custom Recoveries</h3>
+                        <p class="project-description">Advanced recovery solutions for various devices</p>
+                        
+                        <div class="project-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>TWRP for Xiaomi Pad 6</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>OFOX for Xiaomi Pad 6</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>TWRP for Samsung Galaxy A71</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-status">
+                            <span class="status-badge status-active">Active Development</span>
+                        </div>
                     </div>
-                    <div class="project-card">
-                        <h3 class="project-card-title">
-                            <i class="fas fa-mobile-alt"></i>
-                            ROMs
-                        </h3>
-                        <ul class="project-list">
-                            <li class="project-item">AxionAOSP <span class="project-device">for Samsung Galaxy A71</span></li>
-                            <li class="project-item">AxionAOSP <span class="project-device">for Xiaomi Pad 6</span></li>
-                            <li class="project-item">AxionAOSP <span class="project-device">for OnePlus 7 Pro</span></li>
-                            <li class="project-item">Project Pixelage <span class="project-device">for Xiaomi Pad 6</span></li>
-                        </ul>
+                    
+                    <div class="project-card" data-category="rom">
+                        <div class="project-header">
+                            <div class="project-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="project-badge">ROM</div>
+                        </div>
+                        
+                        <h3 class="project-title">AxionAOSP</h3>
+                        <p class="project-description">Custom Android ROM with enhanced features</p>
+                        
+                        <div class="project-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Samsung Galaxy A71</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Xiaomi Pad 6</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>OnePlus 7 Pro</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-status">
+                            <span class="status-badge status-active">Active Development</span>
+                        </div>
                     </div>
-                    <div class="project-card">
-                        <h3 class="project-card-title">
-                            <i class="fas fa-microchip"></i>
-                            Kernels
-                        </h3>
-                        <ul class="project-list">
-                            <li class="project-item">Rμxne Kernel <span class="project-device">for OnePlus 7 Pro (guacamole)</span></li>
-                            <li class="project-item">Rμxne Kernel <span class="project-device">for Xiaomi Pad 6 (pipa)</span></li>
-                            <li class="project-item">Rμxne Kernel <span class="project-device">for Samsung Galaxy A71 (a71)</span></li>
-                        </ul>
+                    
+                    <div class="project-card" data-category="kernel">
+                        <div class="project-header">
+                            <div class="project-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <div class="project-badge">Kernel</div>
+                        </div>
+                        
+                        <h3 class="project-title">Rμxne Kernel</h3>
+                        <p class="project-description">Optimized kernels for performance and battery life</p>
+                        
+                        <div class="project-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>OnePlus 7 Pro</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Xiaomi Pad 6</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check"></i>
+                                <span>Samsung Galaxy A71</span>
+                            </div>
+                        </div>
+                        
+                        <div class="project-status">
+                            <span class="status-badge status-active">Active Development</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section" id="devices">
+        <!-- Devices Section -->
+        <section class="section devices-section" id="devices">
             <div class="container">
-                <h2 class="section-title">Device Inventory</h2>
-                <p class="section-description">Here are the devices I currently work with for development, testing, and daily use.</p>
+                <div class="section-header">
+                    <h2 class="section-title">Device Portfolio</h2>
+                    <p class="section-subtitle">Devices I work with for development and testing</p>
+                </div>
+                
                 <div class="devices-grid">
                     <div class="device-card" data-device="redmi12">
                         <div class="device-image">
-                            <img src="https://media.croma.com/image/upload/v1708666027/Croma%20Assets/Communication/Mobiles/Images/275526_0_pnndxh.png" alt="Xiaomi Redmi 12">
+                            <img src="https://media.croma.com/image/upload/v1708666027/Croma%20Assets/Communication/Mobiles/Images/275526_0_pnndxh.png" alt="Xiaomi Redmi 12" loading="lazy">
                         </div>
-                        <div class="device-info">
-                            <h3 class="device-name">Xiaomi Redmi 12</h3>
-                            <span class="device-status active">Active</span>
-                            <div class="device-summary">
-                                <span><i class="fas fa-microchip"></i> Helio G88</span>
-                                <span><i class="fas fa-memory"></i> 8GB RAM</span>
-                                <span><i class="fas fa-mobile-alt"></i> 6.79" LCD</span>
+                        <div class="device-content">
+                            <div class="device-header">
+                                <h3 class="device-name">Xiaomi Redmi 12</h3>
+                                <span class="device-status status-active">Active</span>
                             </div>
-                            <a href="#" class="device-link">Click for specs <i class="fas fa-arrow-right"></i></a>
+                            <div class="device-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>Helio G88</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-memory"></i>
+                                    <span>8GB RAM</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>6.79" LCD</span>
+                                </div>
+                            </div>
+                            <button class="device-details-btn" data-device="redmi12">
+                                <i class="fas fa-info-circle"></i>
+                                View Details
+                            </button>
                         </div>
                     </div>
+                    
                     <div class="device-card" data-device="a71">
                         <div class="device-image">
-                            <img src="https://wiki.lineageos.org/images/devices/a71.png" alt="Samsung Galaxy A71">
+                            <img src="https://wiki.lineageos.org/images/devices/a71.png" alt="Samsung Galaxy A71" loading="lazy">
                         </div>
-                        <div class="device-info">
-                            <h3 class="device-name">Samsung Galaxy A71</h3>
-                            <span class="device-status active">Active</span>
-                            <div class="device-summary">
-                                <span><i class="fas fa-microchip"></i> SD730</span>
-                                <span><i class="fas fa-memory"></i> 8GB RAM</span>
-                                <span><i class="fas fa-mobile-alt"></i> 6.7" AMOLED</span>
+                        <div class="device-content">
+                            <div class="device-header">
+                                <h3 class="device-name">Samsung Galaxy A71</h3>
+                                <span class="device-status status-active">Active</span>
                             </div>
-                            <a href="#" class="device-link">Click for specs <i class="fas fa-arrow-right"></i></a>
+                            <div class="device-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>SD730</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-memory"></i>
+                                    <span>8GB RAM</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>6.7" AMOLED</span>
+                                </div>
+                            </div>
+                            <button class="device-details-btn" data-device="a71">
+                                <i class="fas fa-info-circle"></i>
+                                View Details
+                            </button>
                         </div>
                     </div>
+                    
                     <div class="device-card" data-device="pad6">
                         <div class="device-image">
-                            <img src="https://i.ibb.co/MycBsvc0/1-41-removebg-preview.png" alt="Xiaomi Pad 6">
+                            <img src="https://i.ibb.co/MycBsvc0/1-41-removebg-preview.png" alt="Xiaomi Pad 6" loading="lazy">
                         </div>
-                        <div class="device-info">
-                            <h3 class="device-name">Xiaomi Pad 6</h3>
-                            <span class="device-status active">Active</span>
-                            <div class="device-summary">
-                                <span><i class="fas fa-microchip"></i> SD870</span>
-                                <span><i class="fas fa-memory"></i> 8GB RAM</span>
-                                <span><i class="fas fa-tablet-alt"></i> 11" 144Hz</span>
+                        <div class="device-content">
+                            <div class="device-header">
+                                <h3 class="device-name">Xiaomi Pad 6</h3>
+                                <span class="device-status status-active">Active</span>
                             </div>
-                            <div class="device-support"><i class="fas fa-heart"></i> Thanks to your support</div>
+                            <div class="device-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>SD870</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-memory"></i>
+                                    <span>8GB RAM</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-tablet-alt"></i>
+                                    <span>11" 144Hz</span>
+                                </div>
+                            </div>
+                            <div class="device-support">
+                                <i class="fas fa-heart"></i>
+                                <span>Thanks to your support</span>
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="device-card" data-device="pixel6pro">
                         <div class="device-image">
-                            <img src="https://wiki.lineageos.org/images/devices/raven.png" alt="Google Pixel 6 Pro">
+                            <img src="https://wiki.lineageos.org/images/devices/raven.png" alt="Google Pixel 6 Pro" loading="lazy">
                         </div>
-                        <div class="device-info">
-                            <h3 class="device-name">Google Pixel 6 Pro</h3>
-                            <span class="device-status coming-soon">Coming Soon</span>
-                            <div class="device-summary">
-                                <span><i class="fas fa-microchip"></i> Google Tensor</span>
-                                <span><i class="fas fa-memory"></i> 12GB RAM</span>
-                                <span><i class="fas fa-mobile-alt"></i> 6.7" LTPO OLED</span>
+                        <div class="device-content">
+                            <div class="device-header">
+                                <h3 class="device-name">Google Pixel 6 Pro</h3>
+                                <span class="device-status status-coming">Coming Soon</span>
                             </div>
-                            <a href="#" class="device-link">Click for specs <i class="fas fa-arrow-right"></i></a>
+                            <div class="device-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>Google Tensor</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-memory"></i>
+                                    <span>12GB RAM</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-mobile-alt"></i>
+                                    <span>6.7" LTPO OLED</span>
+                                </div>
+                            </div>
+                            <button class="device-details-btn" data-device="pixel6pro">
+                                <i class="fas fa-info-circle"></i>
+                                View Details
+                            </button>
                         </div>
                     </div>
+                    
                     <div class="device-card" data-device="thinkpadl480">
                         <div class="device-image">
-                            <img src="https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8NjkwOTl8aW1hZ2UvcG5nfGhkNS9oYjYvOTYwOTE4NDc3MjEyNi5wbmd8ZDMxMWE2M2EyNDVhMmI3MGJhYjBkODUwYjRkM2YwODIwNDQ0NjVlNDM0ZmI5Njg1MGE5MTBkMGZjOWU1YTMxZQ/lenovo-laptop-thinkpad-l480-hero.png" alt="Lenovo ThinkPad L480">
+                            <img src="https://p1-ofp.static.pub/medias/bWFzdGVyfHJvb3R8NjkwOTl8aW1hZ2UvcG5nfGhkNS9oYjYvOTYwOTE4NDc3MjEyNi5wbmd8ZDMxMWE2M2EyNDVhMmI3MGJhYjBkODUwYjRkM2YwODIwNDQ0NjVlNDM0ZmI5Njg1MGE5MTBkMGZjOWU1YTMxZQ/lenovo-laptop-thinkpad-l480-hero.png" alt="Lenovo ThinkPad L480" loading="lazy">
                         </div>
-                        <div class="device-info">
-                            <h3 class="device-name">Lenovo ThinkPad L480</h3>
-                            <span class="device-status active">Active</span>
-                            <div class="device-summary">
-                                <span><i class="fas fa-microchip"></i> i5-8250U</span>
-                                <span><i class="fas fa-memory"></i> 16GB RAM</span>
-                                <span><i class="fas fa-laptop"></i> 14" FHD</span>
+                        <div class="device-content">
+                            <div class="device-header">
+                                <h3 class="device-name">Lenovo ThinkPad L480</h3>
+                                <span class="device-status status-active">Active</span>
                             </div>
-                            <a href="#" class="device-link">Click for specs <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                    <div class="device-card" data-device="newdevice">
-                        <div class="device-image">
-                            <img src="https://pngimg.com/d/question_mark_PNG91.png" alt="Mistery Device">
-                        </div>
-                        <div class="device-info">
-                            <h3 class="device-name">Mistery Device</h3>
-                            <span class="device-status coming-soon">Coming Soon</span>
-                            <div class="device-summary">
-                                <span><i class="fas fa-microchip"></i> SD870</span>
-                                <span><i class="fas fa-memory"></i> 8GB RAM</span>
-                                <span><i class="fas fa-mobile-alt"></i> 6.7" 120Hz OLED</span>
+                            <div class="device-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-microchip"></i>
+                                    <span>i5-8250U</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-memory"></i>
+                                    <span>16GB RAM</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-laptop"></i>
+                                    <span>14" FHD</span>
+                                </div>
                             </div>
-                            <div class="device-support"><i class="fas fa-hourglass-half"></i> Stay tuned!</div>
+                            <button class="device-details-btn" data-device="thinkpadl480">
+                                <i class="fas fa-info-circle"></i>
+                                View Details
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="support-section" id="support">
+        <!-- Support Section -->
+        <section class="section support-section" id="support">
             <div class="container">
-                <div class="support-content">
-                    <div class="support-title">
-                        <h2>Support My Work</h2>
-                        <p>Your contributions help me continue developing and maintaining custom ROMs, recoveries, and kernels</p>
+                <div class="section-header">
+                    <h2 class="section-title">Support My Work</h2>
+                    <p class="section-subtitle">Your contributions help me continue developing amazing Android solutions</p>
+                </div>
+                
+                <div class="support-grid">
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h3>Revolut</h3>
+                        <p>Quick and easy payments</p>
+                        <a href="https://revolut.me/sp900" target="_blank" rel="noopener" class="support-link">
+                            <i class="fas fa-external-link-alt"></i>
+                            Send Money
+                        </a>
                     </div>
                     
-                    <div class="support-options">
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>Revolut</h3>
-                                    <p>Quick and easy payments</p>
-                                </div>
-                            </div>
-                            <a href="https://revolut.me/sp900" target="_blank" class="support-link">
-                                Send Money <i class="fas fa-external-link-alt"></i>
-                            </a>
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-coffee"></i>
                         </div>
-                        
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fas fa-coffee"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>Ko-Fi</h3>
-                                    <p>Buy me a coffee</p>
-                                </div>
-                            </div>
-                            <a href="https://ko-fi.com/mx7111" target="_blank" class="support-link">
-                                Support on Ko-Fi <i class="fas fa-external-link-alt"></i>
-                            </a>
+                        <h3>Ko-Fi</h3>
+                        <p>Buy me a coffee</p>
+                        <a href="https://ko-fi.com/mx7111" target="_blank" rel="noopener" class="support-link">
+                            <i class="fas fa-external-link-alt"></i>
+                            Support on Ko-Fi
+                        </a>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fab fa-paypal"></i>
                         </div>
-                        
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fab fa-paypal"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>PayPal</h3>
-                                    <p>One-time or recurring</p>
-                                </div>
-                            </div>
-                            <a href="https://paypal.me/boalathegod" target="_blank" class="support-link">
-                                Donate via PayPal <i class="fas fa-external-link-alt"></i>
-                            </a>
+                        <h3>PayPal</h3>
+                        <p>One-time or recurring</p>
+                        <a href="https://paypal.me/boalathegod" target="_blank" rel="noopener" class="support-link">
+                            <i class="fas fa-external-link-alt"></i>
+                            Donate via PayPal
+                        </a>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fab fa-bitcoin"></i>
                         </div>
-                        
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fab fa-bitcoin"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>Bitcoin</h3>
-                                    <p>Cryptocurrency</p>
-                                </div>
-                            </div>
-                            <div class="support-address">
-                                bc1q0pe02cq6ufzn4s3t8aeq0n8v2ztrpxzau07r7g
-                                <button class="copy-btn" title="Copy to clipboard" data-clipboard="bc1q0pe02cq6ufzn4s3t8aeq0n8v2ztrpxzau07r7g">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
+                        <h3>Bitcoin</h3>
+                        <p>Cryptocurrency</p>
+                        <div class="crypto-address">
+                            <code>bc1q0pe02cq6ufzn4s3t8aeq0n8v2ztrpxzau07r7g</code>
+                            <button class="copy-btn" data-clipboard="bc1q0pe02cq6ufzn4s3t8aeq0n8v2ztrpxzau07r7g" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
                         </div>
-                        
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fab fa-ethereum"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>Ethereum</h3>
-                                    <p>Cryptocurrency</p>
-                                </div>
-                            </div>
-                            <div class="support-address">
-                                0x302372Fc36C11EFa9107dc05aB694593C3De0A36
-                                <button class="copy-btn" title="Copy to clipboard" data-clipboard="0x302372Fc36C11EFa9107dc05aB694593C3De0A36">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fab fa-ethereum"></i>
                         </div>
-                        
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fas fa-coins"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>Solana</h3>
-                                    <p>Cryptocurrency</p>
-                                </div>
+                        <h3>Ethereum</h3>
+                        <p>Cryptocurrency</p>
+                        <div class="crypto-address">
+                            <code>0x302372Fc36C11EFa9107dc05aB694593C3De0A36</code>
+                            <button class="copy-btn" data-clipboard="0x302372Fc36C11EFa9107dc05aB694593C3De0A36" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="support-card">
+                        <div class="support-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <h3>Solana</h3>
+                        <p>Cryptocurrency</p>
+                        <div class="crypto-address">
+                            <code>6vNtW6eDhfubLcin7qSjQfkFr1KbN78HDuP2LNdEusuF</code>
+                            <button class="copy-btn" data-clipboard="6vNtW6eDhfubLcin7qSjQfkFr1KbN78HDuP2LNdEusuF" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section contact-section" id="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Get in Touch</h2>
+                    <p class="section-subtitle">Let's discuss Android development, collaboration, or just say hello</p>
+                </div>
+                
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fab fa-github"></i>
                             </div>
-                            <div class="support-address">
-                                6vNtW6eDhfubLcin7qSjQfkFr1KbN78HDuP2LNdEusuF
-                                <button class="copy-btn" title="Copy to clipboard" data-clipboard="6vNtW6eDhfubLcin7qSjQfkFr1KbN78HDuP2LNdEusuF">
-                                    <i class="fas fa-copy"></i>
-                                </button>
+                            <div class="contact-details">
+                                <h3>GitHub</h3>
+                                <p>Check out my open source projects</p>
+                                <a href="#" class="contact-link">View Profile</a>
                             </div>
                         </div>
                         
-                        <div class="support-card">
-                            <div class="support-card-header">
-                                <div class="support-icon">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                                <div class="support-name">
-                                    <h3>UPI</h3>
-                                    <p>Indian payment method</p>
-                                </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fab fa-telegram-plane"></i>
                             </div>
-                            <div class="support-address">
-                                arkangel@upi
-                                <button class="copy-btn" title="Copy to clipboard" data-clipboard="arkangel@upi">
-                                    <i class="fas fa-copy"></i>
-                                </button>
+                            <div class="contact-details">
+                                <h3>Telegram</h3>
+                                <p>Join our development community</p>
+                                <a href="#" class="contact-link">Join Channel</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fab fa-xda"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>XDA Developers</h3>
+                                <p>Follow my development threads</p>
+                                <a href="#" class="contact-link">View Threads</a>
                             </div>
                         </div>
                     </div>
@@ -395,53 +537,68 @@
         </section>
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    rmux<span>.</span>
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="brand-icon">🤖</span>
+                        <span class="brand-text">rmux<span class="brand-dot">.</span></span>
+                    </div>
+                    <p class="footer-description">Building the future of Android, one device at a time.</p>
                 </div>
-                <div class="social-links">
-                    <a href="#" class="social-link" aria-label="GitHub">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Telegram">
-                        <i class="fab fa-telegram-plane"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="XDA Developers">
-                        <i class="fab fa-xda"></i>
-                    </a>
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <i class="fab fa-twitter"></i>
-                    </a>
+                
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Development</h4>
+                        <ul>
+                            <li><a href="#projects">Projects</a></li>
+                            <li><a href="#devices">Devices</a></li>
+                            <li><a href="#support">Support</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Connect</h4>
+                        <ul>
+                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="#">GitHub</a></li>
+                            <li><a href="#">Telegram</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+            
             <div class="footer-bottom">
                 <p>&copy; 2025 rmux. All rights reserved.</p>
+                <p>Made with <i class="fas fa-heart"></i> for the Android community</p>
             </div>
         </div>
     </footer>
 
-    <!-- Device Specs Modal -->
-<div id="deviceModal" class="device-modal">
-    <div class="device-modal-content">
-        <span class="device-modal-close">&times;</span>
-        <div class="device-modal-header">
-            <h2 id="modalDeviceName"></h2>
-        </div>
-        <div class="device-modal-body">
-            <div class="device-modal-image">
-                <img id="modalDeviceImage" src="/placeholder.svg" alt="Device Image">
+    <!-- Device Modal -->
+    <div class="modal" id="deviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalDeviceName"></h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <div class="device-modal-specs">
-                <h3>Specifications</h3>
-                <div id="modalDeviceSpecs" class="specs-list"></div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalDeviceImage" src="" alt="">
+                </div>
+                <div class="modal-specs">
+                    <h3>Specifications</h3>
+                    <div id="modalDeviceSpecs" class="specs-grid"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-<script src="script/1.js"></script>
+
+    <!-- Scripts -->
+    <script src="script/1.js"></script>
 </body>
 </html>
