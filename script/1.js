@@ -142,7 +142,7 @@ class RmuxWebsite {
     const deviceSpecs = {
       redmi12: {
         name: "Xiaomi Redmi 12",
-        img: "https://media.croma.com/image/upload/v1708666027/Croma%20Assets/Communication/Mobiles/Images/275526_0_pnndxh.png",
+        img: "https://www.greentelcom.ph/wp-content/uploads/2023/10/GREENTELCOM.PH-2024-02-21T104326.159.png",
         specs: {
           "Processor": "MediaTek Helio G88",
           "RAM": "8GB",
@@ -180,18 +180,46 @@ class RmuxWebsite {
           "Status": "5 HRS left till pickup thanks to your support ❤"
         }
       },
-      pixel6pro: {
-        name: "Google Pixel 6 Pro",
-        img: "https://wiki.lineageos.org/images/devices/raven.png",
+      redmiturbo4pro: {
+        name: "Xiaomi Redmi Turbo 4 Pro",
+        img: "https://cdn.beebom.com/mobile/redmi-turbo-4-pro-front-back-1.png",
         specs: {
-          "Processor": "Google Tensor",
+          "Processor": "Qualcomm Snapdragon 8s Gen 4",
           "RAM": "12GB",
-          "Storage": "128GB",
-          "Display": "6.7\" QHD+ LTPO OLED, 120Hz refresh rate",
-          "Camera": "50MP main + 12MP ultra-wide + 48MP telephoto (4x optical zoom)",
-          "Battery": "5003mAh, 30W fast charging, wireless charging",
-          "OS": "AxionAOSP 1.5",
-          "Status": "Coming soon!"
+          "Storage": "256GB",
+          "Display": "6.83\" AMOLED, 1280 x 2772 px, 120Hz, Dolby Vision, HDR10+, 3200 nits peak brightness",
+          "Camera": "50MP wide (OIS) + 8MP ultrawide, 4K video",
+          "Battery": "7550mAh, 90W fast charging, 22.5W reverse wired",
+          "OS": "Android 15, HyperOS 2",
+          "Status": "Has to arrive to my house."
+        }
+      },
+        pocof3: {
+        name: "Xiaomi Poco F3",
+        img: "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1672036351.65813955.png",
+        specs: {
+          "Processor": "Qualcomm Snapdragon 870 5G",
+          "RAM": "8GB",
+          "Storage": "256GB",
+          "Display": "6.67\" AMOLED, 1080 x 2400 px, 120Hz, HDR10+, 1300 nits peak brightness",
+          "Camera": "48MP wide + 8MP ultrawide + 5MP macro, 4K video",
+          "Battery": "4520mAh, 33W fast charging",
+          "OS": "ColorOS by danda",
+          "Status": "doesn't show signs of life."
+        }
+        },
+        tufa15: {
+        name: "Asus TUF Gaming A15 2023",
+        img: "https://dlcdnwebimgs.asus.com/gain/91a338f4-09ee-4af2-a7b0-cadc78b429c3/",
+        specs: {
+          "Processor": "AMD Ryzen 7 7735HS",
+          "RAM": "16GB",
+          "Storage": "1TB m.2 NVMe SSD",
+          "Display": "yes it has one",
+          "Camera": "nobody cares about this",
+          "Battery": "nobody cares about this too",
+          "OS": "Windows 11",
+          "Status": "main pc."
         }
       },
       thinkpadl480: {
