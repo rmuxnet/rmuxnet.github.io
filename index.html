@@ -16,6 +16,10 @@
                         offblack: '#0a0a0a',
                         terminal: '#cccccc',
                         dim: '#666666',
+                        border: '#171717',
+                    },
+                    fontFamily: {
+                        mono: ['Courier New', 'Courier', 'monospace'], 
                     }
                 }
             }
@@ -24,95 +28,80 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-black text-terminal font-mono antialiased min-h-screen selection:bg-white selection:text-black overflow-x-hidden">
+<body class="bg-black text-terminal font-mono antialiased min-h-screen overflow-x-hidden">
 
     <div class="max-w-4xl mx-auto px-6 py-12">
 
-        <header class="mb-12 border-b border-neutral-900 pb-8 flex flex-col md:flex-row justify-between items-start md:items-end">
+        <header class="mb-16 border-b border-border pb-8 flex flex-col md:flex-row justify-between items-start md:items-end">
             <div>
                 <h1 class="text-4xl font-bold tracking-tighter text-white mb-2">rmux.me</h1>
                 <p class="text-dim text-sm">hi monkey</p>
             </div>
-            <div class="mt-4 md:mt-0 text-right">
-                <div class="text-xs text-dim">CURRENT STATUS</div>
-                <div class="text-white text-sm animate-pulse">● LOSING MY MIND</div>
-            </div>
-        </header>
+            </header>
 
         <section class="mb-16">
-            <p class="text-terminal leading-relaxed max-w-2xl">
+            <p class="text-terminal leading-relaxed max-w-2xl text-lg">
                 Device maintainer and developer. Focusing on AOSP, Fedora on mobile, and web projects. 
                 <br>
-                Currently building stuff for <span class="text-white">alioth</span> and <span class="text-white">pipa</span>.
+                Currently building stuff for <span class="text-white border-b border-dim border-dotted">alioth</span> and <span class="text-white border-b border-dim border-dotted">pipa</span>.
             </p>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
 
             <div>
-                <h2 class="text-white text-sm font-bold mb-6 border-l-2 border-white pl-3 uppercase tracking-widest">
+                <h2 class="text-white text-xs font-bold mb-6 border-l-2 border-white pl-3 uppercase tracking-widest">
                     Maintained Devices
                 </h2>
-                <div class="space-y-6">
+                <div class="space-y-8">
                     <div class="group">
                         <div class="flex justify-between items-baseline mb-1">
-                            <span class="text-white font-bold">POCO F3</span>
-                            <span class="text-xs text-dim font-mono">alioth</span>
+                            <span class="text-white font-bold text-lg">POCO F3</span>
+                            <span class="text-xs text-dim">alioth</span>
                         </div>
-                        <div class="text-xs text-terminal pl-2 border-l border-neutral-800 ml-1">
-                            <div>8GB / 256GB</div>
-                            <div class="mt-1 text-dim">Fedora 42</div>
+                        <div class="text-xs text-terminal pl-3 border-l border-border ml-1">
+                            <div class="mb-1">8GB / 256GB</div>
+                            <div class="text-dim">Fedora 42</div>
                         </div>
                     </div>
 
                     <div class="group">
                         <div class="flex justify-between items-baseline mb-1">
-                            <span class="text-white font-bold">Xiaomi Pad 6</span>
-                            <span class="text-xs text-dim font-mono">pipa</span>
+                            <span class="text-white font-bold text-lg">Xiaomi Pad 6</span>
+                            <span class="text-xs text-dim">pipa</span>
                         </div>
-                        <div class="text-xs text-terminal pl-2 border-l border-neutral-800 ml-1">
-                            <div>8GB / 256GB</div>
-                            <div class="mt-1 text-dim">Fedora 42, Blacksun Kernel, AxionAOSP, TWRP</div>
-                        </div>
-                    </div>
-
-                    <div class="group opacity-60 hover:opacity-100 transition-opacity">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <span class="text-white line-through decoration-red-900">Samsung Galaxy A71</span>
-                            <span class="text-xs text-red-800 font-mono font-bold">FRIED SOC</span>
-                        </div>
-                        <div class="text-xs text-terminal pl-2 border-l border-neutral-800 ml-1">
-                            <div>8GB / 128GB (a71)</div>
-                            <div class="mt-1 text-dim">Project MeidyOS (EOL)</div>
+                        <div class="text-xs text-terminal pl-3 border-l border-border ml-1">
+                            <div class="mb-1">8GB / 256GB</div>
+                            <div class="text-dim">Fedora 42, Blacksun Kernel, AxionAOSP</div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div>
-                <h2 class="text-white text-sm font-bold mb-6 border-l-2 border-neutral-800 pl-3 uppercase tracking-widest text-dim">
+                <h2 class="text-white text-xs font-bold mb-6 border-l-2 border-dim pl-3 uppercase tracking-widest">
                     Personal Hardware
                 </h2>
                 <ul class="space-y-4 text-sm text-terminal">
-                    <li class="flex justify-between border-b border-neutral-900 pb-2">
+                    <li class="flex justify-between items-center border-b border-border pb-2">
                         <span>Redmi Turbo 4 Pro</span>
                         <div class="text-right">
                             <span class="block text-white">12/256</span>
                             <span class="text-xs text-dim">onyx</span>
                         </div>
                     </li>
-                    <li class="flex justify-between border-b border-neutral-900 pb-2">
-                        <span>Asus TUF Gaming A15 2023</span>
+                    <li class="flex justify-between items-center border-b border-border pb-2">
+                        <span>Asus TUF A15</span>
                         <div class="text-right">
                             <span class="block text-white">16GB/1TB</span>
                             <span class="text-xs text-dim">2023</span>
                         </div>
                     </li>
-                    <li class="flex justify-between border-b border-neutral-900 pb-2">
+                    <li class="flex justify-between items-center border-b border-border pb-2">
                         <span>Redmi 12</span>
                         <div class="text-right">
                             <span class="block text-white">8/256</span>
-                            <span class="text-xs text-dim">heat</span>
+                            <span class="text-xs text-dim">fire</span>
                         </div>
                     </li>
                 </ul>
@@ -120,85 +109,85 @@
         </div>
 
         <section class="mb-16">
-            <h2 class="text-xl font-bold text-white mb-6 flex items-center">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
                 <span class="text-dim mr-2">./</span>CODING LANGUAGES
             </h2>
-            <ul class="flex flex-wrap gap-4 text-sm text-terminal font-mono">
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">LUA</li>
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">C</li>
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">Python</li>
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">Kotlin</li>
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">JavaScript</li>
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">Java</li>
-                <li class="bg-neutral-900 px-3 py-1 rounded text-white">TypeScript</li>
-            </ul>
+            <div class="flex flex-wrap gap-2 text-xs text-terminal uppercase font-bold">
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Lua</span>
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">C</span>
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Python</span>
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Kotlin</span>
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">JavaScript</span>
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Java</span>
+                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">TypeScript</span>
+            </div>
         </section>
 
-        <section class="mb-20">
-            <h2 class="text-xl font-bold text-white mb-8 flex items-center">
+        <section class="mb-16">
+            <h2 class="text-lg font-bold text-white mb-8 flex items-center">
                 <span class="text-dim mr-2">./</span>PROJECTS
             </h2>
 
             <div class="grid grid-cols-1 gap-6">
 
-                <a href="https://github.com/rmuxnet/SynCinema" target="_blank" class="block border border-neutral-900 bg-offblack p-6 hover:border-neutral-600 transition group">
-                    <div class="flex justify-between items-start mb-2">
+                <a href="https://github.com/rmuxnet/SynCinema" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
                         <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">SynCinema</h3>
-                        <span class="text-xs border border-neutral-800 rounded px-2 py-1 text-dim">WEB / FLASK</span>
+                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">WEB / FLASK</span>
                     </div>
-                    <p class="text-sm text-terminal mb-4">
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
                         Self-hosted real-time movie watching platform. Synchronized playback, chat, and reactions without the need for subscriptions.
                     </p>
-                    <div class="text-xs text-dim font-mono">
-                        <span class="mr-3">● Socket.IO</span>
-                        <span class="mr-3">● Tailwind</span>
+                    <div class="text-xs text-dim font-mono flex gap-3">
+                        <span>● Socket.IO</span>
+                        <span>● Tailwind</span>
                         <span>● Vanilla JS</span>
                     </div>
                 </a>
 
-                <div class="border border-neutral-900 bg-offblack p-6">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-white font-bold text-lg">Fedora 42 on Pipa/Alioth</h3>
-                        <span class="text-xs border border-neutral-800 rounded px-2 py-1 text-dim">LINUX / ARM</span>
+                <div class="border border-border bg-offblack p-6">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg">Fedora 42 Port</h3>
+                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">LINUX / ARM</span>
                     </div>
-                    <p class="text-sm text-terminal mb-4">
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
                         Fedora Linux 42 build images for Xiaomi Pad 6 | POCO F3.
                     </p>
-                    <div class="flex gap-4 text-xs font-mono">
-                        <a href="https://github.com/rmuxv2/pipa-fedora-builder" class="text-white hover:text-dim underline">
+                    <div class="flex gap-4 text-xs">
+                        <a href="https://github.com/rmuxv2/pipa-fedora-builder" class="text-white hover:text-dim underline decoration-dim underline-offset-4">
                             [ View Builder Source ]
                         </a>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="border border-neutral-900 p-5">
+                    <div class="border border-border bg-offblack p-6">
                         <h3 class="text-white font-bold mb-1">Blacksun Kernel</h3>
-                        <p class="text-xs text-dim mb-3">AOSP / COS / HYPEROS</p>
+                        <p class="text-xs text-dim mb-4">AOSP / COS / HYPEROS</p>
                         <p class="text-sm text-terminal">Fixes oriented kernel for Xiaomi Pad 6.</p>
                     </div>
 
-                    <div class="border border-neutral-900 p-5">
+                    <div class="border border-border bg-offblack p-6">
                         <h3 class="text-white font-bold mb-1">AxionAOSP A15</h3>
-                        <p class="text-xs text-dim mb-3">Ver 1.6</p>
+                        <p class="text-xs text-dim mb-4">Ver 1.6</p>
                         <p class="text-sm text-terminal">
-                            Maintained for Pipa/A71 (EOL). <br>
-                            <span class="text-dim italic">A71 (EOL)</span>
+                            Maintained for Xiaomi Pad 6 (pipa).
                         </p>
                     </div>
                 </div>
 
-                <div class="border border-neutral-900 p-4 opacity-75">
-                    <h3 class="text-white text-sm font-bold mb-2">Misc / Tools</h3>
-                    <ul class="text-xs text-dim space-y-1 font-mono">
-                        <li>
-                            > <a href="https://github.com/rmuxv2/Flux" target="_blank" class="underline text-terminal hover:text-white">GTA:SA Flux Utility Menu</a>
-                            <span class="ml-1 text-dim">(Cheat/utility menu for GTA:SA)</span>
+                <div class="border border-border bg-transparent p-6 opacity-80 hover:opacity-100 transition-opacity">
+                    <h3 class="text-white text-sm font-bold mb-4 uppercase tracking-widest border-b border-border pb-2">Misc / Tools</h3>
+                    <ul class="text-xs text-terminal space-y-2 font-mono">
+                        <li class="flex flex-col md:flex-row md:items-center gap-1">
+                            <a href="https://github.com/rmuxv2/Flux" target="_blank" class="text-white hover:underline">> GTA:SA Flux Utility Menu</a>
+                            <span class="text-dim hidden md:inline">—</span>
+                            <span class="text-dim">Cheat/utility menu for GTA:SA</span>
                         </li>
-                        <li>> Project MeidyOS (Archived)</li>
-                        <li>
-                            > <a href="https://github.com/rmuxv2/Linkomanija-Search" target="_blank" class="underline text-terminal hover:text-white">Linkomanija-Search</a>
-                            <span class="ml-1 text-dim">(qBittorrent plugin for linkomanija.net)</span>
+                        <li class="flex flex-col md:flex-row md:items-center gap-1">
+                            <a href="https://github.com/rmuxv2/Linkomanija-Search" target="_blank" class="text-white hover:underline">> Linkomanija-Search</a>
+                            <span class="text-dim hidden md:inline">—</span>
+                            <span class="text-dim">qBittorrent plugin</span>
                         </li>
                     </ul>
                 </div>
@@ -206,29 +195,43 @@
             </div>
         </section>
 
-        <section class="mb-20">
-            <h2 class="text-xl font-bold text-white mb-8 flex items-center">
+        <section class="mb-16">
+            <h2 class="text-lg font-bold text-white mb-8 flex items-center">
                 <span class="text-dim mr-2">./</span>GUIDES
             </h2>
 
-            <div class="grid grid-cols-1 gap-6">
-                <a href="https://github.com/pipaDB/info/blob/main/edl_cable.md" target="_blank" class="block border border-neutral-900 bg-offblack p-6 hover:border-neutral-600 transition group">
-                    <div class="flex justify-between items-start mb-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="https://github.com/pipaDB/info/blob/main/edl_cable.md" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
                         <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">EDL Cable V2</h3>
-                        <span class="text-xs border border-neutral-800 rounded px-2 py-1 text-dim">HARDWARE / DIY</span>
+                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">HARDWARE</span>
                     </div>
-                    <p class="text-sm text-terminal mb-4">
-                        Construction guide for the "Deep Flash" cable. Used to force Qualcomm devices (Snapdragon) into Emergency Download Mode (9008) for unbricking.
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Construction guide for the "Deep Flash" cable. Force Qualcomm devices into 9008 mode.
                     </p>
-                    <div class="text-xs text-dim font-mono">
-                        <span class="mr-3">● Soldering</span>
-                        <span class="mr-3">● Hardware Hack</span>
+                    <div class="text-xs text-dim font-mono flex gap-3">
+                        <span>● DIY</span>
                         <span>● Unbricking</span>
+                    </div>
+                </a>
+
+                <a href="https://github.com/PipaDB/Info/blob/main/edl.md" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">EDL Flashing</h3>
+                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">SOFTWARE</span>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Software guide for flashing firmware images via Emergency Download Mode.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex gap-3">
+                        <span>● QFIL</span>
+                        <span>● Firehose</span>
                     </div>
                 </a>
             </div>
         </section>
-        <section class="mb-16 py-8 border-y border-neutral-900">
+
+        <section class="pt-8 border-t border-border">
             <div class="flex flex-wrap gap-x-8 gap-y-4 text-sm font-mono justify-center md:justify-start">
                 <a href="https://github.com/rmuxnet" class="text-dim hover:text-white transition-colors">
                     github/<span class="text-white">rmuxnet</span>
@@ -248,11 +251,12 @@
             </div>
         </section>
 
-        <footer class="text-center text-xs text-neutral-800 py-12">
-            RMUX.ME
+        <footer class="text-center text-[10px] text-dim py-12 flex flex-col items-center gap-2">
+            <span>RMUX.ME</span>
+            <span id="live-stats" style="opacity:0.5;">Loading stats...</span>
         </footer>
     </div>
-    <span id="live-stats" style="font-family: sans-serif; opacity:0.5;">Loading stats...</span>
+
     <script src="https://x.xkq.workers.dev/track/UgaAlEubQqLX" async></script>
 </body>
 </html>
