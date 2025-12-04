@@ -37,7 +37,7 @@
                 <h1 class="text-4xl font-bold tracking-tighter text-white mb-2">rmux.me</h1>
                 <p class="text-dim text-sm">hi monkey</p>
             </div>
-            </header>
+        </header>
 
         <section class="mb-16">
             <p class="text-terminal leading-relaxed max-w-2xl text-lg">
@@ -208,6 +208,35 @@
             </div>
         </section>
 
+        <!-- ACTIVITY LOG SECTION -->
+        <section class="mb-16">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="text-dim mr-2">./</span>RECENT ACTIVITY
+            </h2>
+            
+            <div id="activity-log" class="font-mono text-xs space-y-3">
+                <span class="text-dim animate-pulse">Fetching data from GitHub nodes...</span>
+            </div>
+
+            <!-- 
+              TEMPLATE: This is the blueprint for the activity items. 
+              The JS finds this, copies it, and fills in the blanks.
+            -->
+            <template id="activity-template">
+                <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 group">
+                    <div class="flex items-center gap-2 min-w-fit">
+                        <span class="text-dim">[<span class="js-date"></span>]</span>
+                        <span class="text-dim text-[10px] uppercase tracking-wider hidden md:inline js-user"></span>
+                    </div>
+                    <div class="truncate w-full">
+                        <span class="text-dim font-bold mr-1 js-icon"></span>
+                        <span class="text-terminal js-action"></span>
+                        <a href="#" target="_blank" class="text-white hover:underline decoration-1 underline-offset-4 font-bold ml-1 js-target"></a>
+                    </div>
+                </div>
+            </template>
+        </section>
+
         <section class="mb-16">
             <h2 class="text-lg font-bold text-white mb-8 flex items-center">
                 <span class="text-dim mr-2">./</span>GUIDES
@@ -266,9 +295,12 @@
 
         <footer class="text-center text-[10px] text-dim py-12 flex flex-col items-center gap-2">
             <span>RMUX.ME</span>
-            <span id="live-stats" style="opacity:0.5;">Loading stats...</span>
+            <span id="live-stats" style="opacity:0.5;"></span>
         </footer>
     </div>
+
+    <!-- Linked JS file -->
+    <script src="script.js"></script>
 
     <script src="https://x.xkq.workers.dev/track/UgaAlEubQqLX" async></script>
 </body>
