@@ -83,3 +83,81 @@ async function fetchGitHubActivity() {
 }
 
 fetchGitHubActivity();
+
+/* --- GUESTBOOK LOGIC --- */
+const workerUrl = "https://rmux-guestbook.xkq.workers.dev"; 
+const gbContainer = document.getElementById('guestbook-log');
+const gbTemplate = document.getElementById('guestbook-template');
+const gbForm = document.getElementById('gb-form');
+
+async function fetchGuestbook() {
+    try {
+        const res = await fetch(`${workerUrl}/api/entries`);
+        if (!res.ok) throw new Error("DB Error");
+        const entries = await res.json();
+
+        gbContainer.innerHTML = ''; 
+
+        if (entries.length === 0) {
+            gbContainer.innerHTML = '<span class="text-dim">No signatures yet. Be the first.</span>';
+            return;
+        }
+
+        entries.forEach(entry => {
+            const clone = gbTemplate.content.cloneNode(true);
+            
+            // Format Date: YYYY-MM-DD
+            const dateStr = new Date(entry.created_at).toISOString().slice(0, 10);
+
+            // XSS Prevention
+            const safeName = entry.name.replace(/</g, "&lt;");
+            const safeMsg = entry.message.replace(/</g, "&lt;");
+
+            clone.querySelector('.gb-date').textContent = dateStr;
+            clone.querySelector('.gb-name').textContent = safeName;
+            clone.querySelector('.gb-msg').innerHTML = `> ${safeMsg}`;
+
+            gbContainer.appendChild(clone);
+        });
+
+    } catch (e) {
+        console.error(e);
+        gbContainer.innerHTML = `<span class="text-dim border-l-2 border-red-900 pl-2">System Error: Database unreachable.</span>`;
+    }
+}
+
+// Handle Submit
+if (gbForm) {
+    gbForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = gbForm.querySelector('button');
+        const originalText = btn.innerHTML;
+        
+        // Loading State
+        btn.disabled = true;
+        btn.innerHTML = `<span class="animate-pulse">UPLOADING...</span>`;
+
+        const name = document.getElementById('gb-name').value;
+        const message = document.getElementById('gb-msg').value;
+
+        try {
+            await fetch(`${workerUrl}/api/sign`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, message })
+            });
+            
+            // Clear and Reload
+            document.getElementById('gb-msg').value = '';
+            fetchGuestbook();
+        } catch (err) {
+            alert("Failed to commit message.");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    });
+}
+
+// Init
+fetchGuestbook();

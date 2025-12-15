@@ -208,6 +208,48 @@
             </div>
         </section>
 
+        <!-- GUESTBOOK SECTION -->
+        <section class="mb-16">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="text-dim mr-2">./</span>GUESTBOOK
+            </h2>
+
+            <form id="gb-form" class="border border-border bg-offblack p-6 mb-8 group hover:border-dim transition-colors">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    <div class="md:col-span-1">
+                        <label class="block text-[10px] text-dim font-bold mb-2 uppercase tracking-wider">/USR/NAME</label>
+                        <input type="text" id="gb-name" required maxlength="20"
+                            class="w-full bg-black border border-border text-white px-3 py-2 text-xs font-mono focus:border-dim focus:outline-none transition-colors placeholder-dim/50" 
+                            placeholder="anon">
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-[10px] text-dim font-bold mb-2 uppercase tracking-wider">/BIN/MSG</label>
+                        <input type="text" id="gb-msg" required maxlength="200"
+                            class="w-full bg-black border border-border text-terminal px-3 py-2 text-xs font-mono focus:border-dim focus:outline-none transition-colors placeholder-dim/50" 
+                            placeholder="write something...">
+                    </div>
+                </div>
+                <button type="submit" 
+                    class="w-full border border-border bg-black text-dim hover:text-white hover:border-white uppercase text-xs font-bold py-2 transition-all flex justify-center items-center gap-2">
+                    <span>> COMMIT_MESSAGE</span>
+                </button>
+            </form>
+
+            <div id="guestbook-log" class="font-mono text-xs space-y-3">
+                <span class="text-dim animate-pulse">Connecting to database...</span>
+            </div>
+
+            <template id="guestbook-template">
+                <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 border-l border-border pl-3 ml-1 hover:border-dim transition-colors">
+                    <div class="flex items-center gap-2 min-w-fit">
+                        <span class="text-dim">[<span class="gb-date"></span>]</span>
+                        <span class="text-white font-bold gb-name"></span>
+                    </div>
+                    <div class="text-terminal gb-msg break-all"></div>
+                </div>
+            </template>
+        </section>
+
         <!-- ACTIVITY LOG SECTION -->
         <section class="mb-16">
             <h2 class="text-lg font-bold text-white mb-6 flex items-center">
@@ -217,11 +259,6 @@
             <div id="activity-log" class="font-mono text-xs space-y-3">
                 <span class="text-dim animate-pulse">Fetching data from GitHub nodes...</span>
             </div>
-
-            <!-- 
-              TEMPLATE: This is the blueprint for the activity items. 
-              The JS finds this, copies it, and fills in the blanks.
-            -->
             <template id="activity-template">
                 <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 group">
                     <div class="flex items-center gap-2 min-w-fit">
@@ -299,9 +336,7 @@
         </footer>
     </div>
 
-    <!-- Linked JS file -->
     <script src="script.js"></script>
-
     <script src="https://x.xkq.workers.dev/track/UgaAlEubQqLX" async></script>
 </body>
 </html>
