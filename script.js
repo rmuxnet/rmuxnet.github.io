@@ -1,163 +1,155 @@
-const usernames = ['rmuxv2', 'rmuxnet'];
-const maxItems = 6;
-const container = document.getElementById('activity-log');
-const template = document.getElementById('activity-template');
+document.addEventListener('alpine:init', () => {
 
-async function fetchGitHubActivity() {
-    try {
-        const requests = usernames.map(user => 
-            fetch(`https://api.github.com/users/${user}/events/public`)
-                .then(res => {
-                    if (!res.ok) throw new Error(`Failed to load ${user}`);
-                    return res.json();
-                })
-        );
+    /* ============================================
+       CLOCK COMPONENT
+       ============================================ */
+    Alpine.data('clock', () => ({
+        time: '',
+        init() {
+            const tick = () => {
+                const now = new Date();
+                this.time = [
+                    String(now.getHours()).padStart(2, '0'),
+                    String(now.getMinutes()).padStart(2, '0'),
+                    String(now.getSeconds()).padStart(2, '0'),
+                ].join(':');
+            };
+            tick();
+            setInterval(tick, 1000);
+        },
+    }));
 
-        const responses = await Promise.all(requests);
-        let allEvents = responses.flat();
+    /* ============================================
+       GITHUB STATS COMPONENT
+       Aggregates repos, stars, followers across
+       both rmuxnet + rmuxv2 accounts.
+       ============================================ */
+    Alpine.data('githubStats', () => ({
+        repos: '—',
+        stars: '—',
+        followers: '—',
 
-        // Sort by date (newest first)
-        allEvents.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        async init() {
+            try {
+                const accounts = ['rmuxnet', 'rmuxv2'];
 
-        container.innerHTML = '';
+                const [profiles, repoLists] = await Promise.all([
+                    Promise.all(accounts.map(u =>
+                        fetch(`https://api.github.com/users/${u}`).then(r => r.json())
+                    )),
+                    Promise.all(accounts.map(u =>
+                        fetch(`https://api.github.com/users/${u}/repos?per_page=100`).then(r => r.json())
+                    )),
+                ]);
 
-        if (allEvents.length === 0) {
-            container.innerHTML = '<span class="text-dim">No recent public activity found.</span>';
-            return;
-        }
-
-        let count = 0;
-        for (const event of allEvents) {
-            if (count >= maxItems) break;
-
-            let action = '';
-            let targetName = event.repo.name;
-            let targetUrl = `https://github.com/${event.repo.name}`;
-            let icon = '>';
-
-            if (event.type === 'PushEvent') {
-                action = `pushed to`;
-                icon = '+';
-            } else if (event.type === 'WatchEvent') {
-                action = `starred`;
-                icon = '*';
-            } else if (event.type === 'CreateEvent') {
-                action = `created repo`;
-                icon = 'C';
-            } else if (event.type === 'PullRequestEvent') {
-                action = `opened PR in`;
-                icon = 'R';
-            } else if (event.type === 'ForkEvent') {
-                action = `forked`;
-                icon = 'F';
-            } else {
-                continue; 
+                this.repos = profiles.reduce((s, p) => s + (p.public_repos || 0), 0);
+                this.followers = profiles.reduce((s, p) => s + (p.followers || 0), 0);
+                this.stars = repoLists.flat().reduce((s, r) => s + (r.stargazers_count || 0), 0);
+            } catch (e) {
+                console.error('githubStats:', e);
             }
+        },
+    }));
 
-            const dateObj = new Date(event.created_at);
-            const dateStr = dateObj.toISOString().slice(0, 10);
-            const userHandle = event.actor.login;
+    /* ============================================
+       BUILD STATUS COMPONENT
+       Fetches the latest GitHub Actions run for
+       a given repo and exposes a status string.
+       ============================================ */
+    Alpine.data('buildStatus', (owner, repo) => ({
+        status: null,   // 'passing' | 'failing' | 'running' | null
 
-            // Clone the template
-            const clone = template.content.cloneNode(true);
+        get dotColor() {
+            return {
+                passing: 'bg-green-500',
+                failing: 'bg-red-500',
+                running: 'bg-yellow-400',
+            }[this.status] ?? 'bg-dim';
+        },
 
-            // Fill in the data
-            clone.querySelector('.js-date').textContent = dateStr;
-            clone.querySelector('.js-user').textContent = userHandle;
-            clone.querySelector('.js-icon').textContent = icon;
-            clone.querySelector('.js-action').textContent = action;
-            
-            const link = clone.querySelector('.js-target');
-            link.textContent = targetName;
-            link.href = targetUrl;
+        get textColor() {
+            return {
+                passing: 'text-green-500',
+                failing: 'text-red-500',
+                running: 'text-yellow-400',
+            }[this.status] ?? 'text-dim';
+        },
 
-            // Append to DOM
-            container.appendChild(clone);
-            count++;
-        }
+        async init() {
+            try {
+                const r = await fetch(
+                    `https://api.github.com/repos/${owner}/${repo}/actions/runs?per_page=1`
+                );
+                if (!r.ok) return;
+                const data = await r.json();
+                const run = data.workflow_runs?.[0];
+                if (!run) return;
 
-    } catch (error) {
-        container.innerHTML = `<span class="text-dim border-l-2 border-red-900 pl-2">Error connecting to GitHub nodes.</span>`;
-        console.error(error);
-    }
-}
+                if (run.status === 'in_progress' || run.status === 'queued') {
+                    this.status = 'running';
+                } else if (run.conclusion === 'success') {
+                    this.status = 'passing';
+                } else if (run.conclusion === 'failure') {
+                    this.status = 'failing';
+                }
+                // cancelled / skipped → leave null (no badge)
+            } catch (e) {
+                // silently fail — badge just won't appear
+            }
+        },
+    }));
 
-fetchGitHubActivity();
+    /* ============================================
+       GITHUB ACTIVITY COMPONENT
+       ============================================ */
+    Alpine.data('githubActivity', () => ({
+        events: [],
+        loading: true,
+        error: false,
 
-/* --- GUESTBOOK LOGIC --- */
-const workerUrl = "https://rmux-guestbook.xkq.workers.dev"; 
-const gbContainer = document.getElementById('guestbook-log');
-const gbTemplate = document.getElementById('guestbook-template');
-const gbForm = document.getElementById('gb-form');
+        async init() {
+            const TYPE_MAP = {
+                PushEvent: { action: 'pushed to', icon: '+' },
+                WatchEvent: { action: 'starred', icon: '*' },
+                CreateEvent: { action: 'created repo', icon: 'C' },
+                PullRequestEvent: { action: 'opened PR in', icon: 'R' },
+                ForkEvent: { action: 'forked', icon: 'F' },
+            };
 
-async function fetchGuestbook() {
-    try {
-        const res = await fetch(`${workerUrl}/api/entries`);
-        if (!res.ok) throw new Error("DB Error");
-        const entries = await res.json();
+            try {
+                const responses = await Promise.all(
+                    ['rmuxv2', 'rmuxnet'].map(u =>
+                        fetch(`https://api.github.com/users/${u}/events/public`)
+                            .then(r => { if (!r.ok) throw new Error(u); return r.json(); })
+                    )
+                );
 
-        gbContainer.innerHTML = ''; 
+                const all = responses
+                    .flat()
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-        if (entries.length === 0) {
-            gbContainer.innerHTML = '<span class="text-dim">No signatures yet. Be the first.</span>';
-            return;
-        }
+                let count = 0;
+                for (const ev of all) {
+                    if (count >= 6) break;
+                    const meta = TYPE_MAP[ev.type];
+                    if (!meta) continue;
+                    this.events.push({
+                        date: new Date(ev.created_at).toISOString().slice(0, 10),
+                        user: ev.actor.login,
+                        icon: meta.icon,
+                        action: meta.action,
+                        name: ev.repo.name,
+                        url: `https://github.com/${ev.repo.name}`,
+                    });
+                    count++;
+                }
+            } catch (e) {
+                console.error(e);
+                this.error = true;
+            } finally {
+                this.loading = false;
+            }
+        },
+    }));
 
-        entries.forEach(entry => {
-            const clone = gbTemplate.content.cloneNode(true);
-            
-            // Format Date: YYYY-MM-DD
-            const dateStr = new Date(entry.created_at).toISOString().slice(0, 10);
-
-            // XSS Prevention
-            const safeName = entry.name.replace(/</g, "&lt;");
-            const safeMsg = entry.message.replace(/</g, "&lt;");
-
-            clone.querySelector('.gb-date').textContent = dateStr;
-            clone.querySelector('.gb-name').textContent = safeName;
-            clone.querySelector('.gb-msg').innerHTML = `> ${safeMsg}`;
-
-            gbContainer.appendChild(clone);
-        });
-
-    } catch (e) {
-        console.error(e);
-        gbContainer.innerHTML = `<span class="text-dim border-l-2 border-red-900 pl-2">System Error: Database unreachable.</span>`;
-    }
-}
-
-// Handle Submit
-if (gbForm) {
-    gbForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = gbForm.querySelector('button');
-        const originalText = btn.innerHTML;
-        
-        // Loading State
-        btn.disabled = true;
-        btn.innerHTML = `<span class="animate-pulse">UPLOADING...</span>`;
-
-        const name = document.getElementById('gb-name').value;
-        const message = document.getElementById('gb-msg').value;
-
-        try {
-            await fetch(`${workerUrl}/api/sign`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, message })
-            });
-            
-            // Clear and Reload
-            document.getElementById('gb-msg').value = '';
-            fetchGuestbook();
-        } catch (err) {
-            alert("Failed to commit message.");
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = originalText;
-        }
-    });
-}
-
-// Init
-fetchGuestbook();
+});

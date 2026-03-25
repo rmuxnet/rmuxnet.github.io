@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" class="bg-black">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rmux.me</title>
+    <title>rmux.me — device maintainer &amp; developer</title>
+    <meta name="description"
+        content="rmux — Device maintainer and developer focused on AOSP, Fedora on mobile, and web projects. Maintaining POCO F3 (alioth) and Xiaomi Pad 6 (pipa).">
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -12,14 +15,14 @@
             theme: {
                 extend: {
                     colors: {
-                        black: '#000000', 
+                        black: '#000000',
                         offblack: '#0a0a0a',
                         terminal: '#cccccc',
-                        dim: '#666666',
+                        dim: '#555555',
                         border: '#171717',
                     },
                     fontFamily: {
-                        mono: ['Courier New', 'Courier', 'monospace'], 
+                        mono: ['"JetBrains Mono"', 'Courier New', 'monospace'],
                     }
                 }
             }
@@ -27,27 +30,66 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+
+    <!--
+        Script load order (all deferred):
+        1. script.js       — registers Alpine.data() via alpine:init listener
+        2. intersect plugin — registers x-intersect directive on window.Alpine
+        3. alpinejs         — boots Alpine, fires alpine:init, processes DOM
+    -->
+    <script defer src="script.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
+
 <body class="bg-black text-terminal font-mono antialiased min-h-screen overflow-x-hidden">
 
     <div class="max-w-4xl mx-auto px-6 py-12">
 
-        <header class="mb-16 border-b border-border pb-8 flex flex-col md:flex-row justify-between items-start md:items-end">
-            <div>
-                <h1 class="text-4xl font-bold tracking-tighter text-white mb-2">rmux.me</h1>
-                <p class="text-dim text-sm">hi monkey</p>
+        <!-- HEADER -->
+        <header x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-1 mb-16 border-b border-border pb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                <div>
+                    <h1 class="text-4xl font-bold tracking-tighter text-white mb-2 header-line typed-cursor">rmux.me
+                    </h1>
+                    <p class="text-dim text-sm flex items-center gap-2 mt-4">
+                        <span class="status-dot"></span>
+                        <span>online — hi monkey</span>
+                    </p>
+                </div>
+                <div x-data="clock()" class="text-right text-xs text-dim font-mono hidden md:block">
+                    <div x-text="time" class="text-terminal live-clock"></div>
+                    <div class="mt-1">UTC+1</div>
+                </div>
             </div>
         </header>
 
-        <section class="mb-16">
-            <p class="text-terminal leading-relaxed max-w-2xl text-lg">
-                Device maintainer and developer. Focusing on AOSP, Fedora on mobile, and web projects. 
-                <br>
-                Currently building stuff for <span class="text-white border-b border-dim border-dotted">alioth</span> and <span class="text-white border-b border-dim border-dotted">pipa</span>.
+        <!-- GITHUB STATS BAR -->
+        <div x-data="githubStats()"
+            class="mb-12 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-mono text-dim">
+            <span>repos <span class="text-terminal tabular-nums" x-text="repos">—</span></span>
+            <span class="text-border">·</span>
+            <span>stars <span class="text-terminal tabular-nums" x-text="stars">—</span></span>
+            <span class="text-border">·</span>
+            <span>followers <span class="text-terminal tabular-nums" x-text="followers">—</span></span>
+        </div>
+
+        <!-- BIO -->
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-2 mb-16">
+            <p class="text-terminal leading-relaxed max-w-2xl text-base">
+                Device maintainer and developer. Focusing on AOSP, Fedora on mobile, and web projects.
+                <br class="hidden md:block">
+                Currently building stuff for
+                <span class="text-white border-b border-dim border-dotted cursor-default">alioth</span> and
+                <span class="text-white border-b border-dim border-dotted cursor-default">pipa</span>.
             </p>
         </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+        <!-- HARDWARE GRID -->
+        <div x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-3 grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
 
             <div>
                 <h2 class="text-white text-xs font-bold mb-6 border-l-2 border-white pl-3 uppercase tracking-widest">
@@ -59,18 +101,19 @@
                             <span class="text-white font-bold text-lg">POCO F3</span>
                             <span class="text-xs text-dim">alioth</span>
                         </div>
-                        <div class="text-xs text-terminal pl-3 border-l border-border ml-1">
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
                             <div class="mb-1">8GB / 256GB</div>
                             <div class="text-dim">Fedora 42</div>
                         </div>
                     </div>
-
                     <div class="group">
                         <div class="flex justify-between items-baseline mb-1">
                             <span class="text-white font-bold text-lg">Xiaomi Pad 6</span>
                             <span class="text-xs text-dim">pipa</span>
                         </div>
-                        <div class="text-xs text-terminal pl-3 border-l border-border ml-1">
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
                             <div class="mb-1">8GB / 256GB</div>
                             <div class="text-dim">Fedora 42, Blacksun Kernel, AxionAOSP</div>
                         </div>
@@ -83,21 +126,24 @@
                     Personal Hardware
                 </h2>
                 <ul class="space-y-4 text-sm text-terminal">
-                    <li class="flex justify-between items-center border-b border-border pb-2">
+                    <li
+                        class="flex justify-between items-center border-b border-border pb-2 hover:border-dim transition-colors">
                         <span>Redmi Turbo 4 Pro</span>
                         <div class="text-right">
                             <span class="block text-white">12/256</span>
                             <span class="text-xs text-dim">onyx</span>
                         </div>
                     </li>
-                    <li class="flex justify-between items-center border-b border-border pb-2">
+                    <li
+                        class="flex justify-between items-center border-b border-border pb-2 hover:border-dim transition-colors">
                         <span>Asus TUF A15</span>
                         <div class="text-right">
                             <span class="block text-white">16GB/1TB</span>
                             <span class="text-xs text-dim">FA507</span>
                         </div>
                     </li>
-                    <li class="flex justify-between items-center border-b border-border pb-2">
+                    <li
+                        class="flex justify-between items-center border-b border-border pb-2 hover:border-dim transition-colors">
                         <span>Redmi 12</span>
                         <div class="text-right">
                             <span class="block text-white">8/256</span>
@@ -108,97 +154,160 @@
             </div>
         </div>
 
-        <section class="mb-16">
+        <!-- LANGUAGES -->
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
             <h2 class="text-lg font-bold text-white mb-6 flex items-center">
-                <span class="text-dim mr-2">./</span>CODING LANGUAGES
+                <span class="section-prefix text-dim mr-2">./</span>CODING LANGUAGES
             </h2>
             <div class="flex flex-wrap gap-2 text-xs text-terminal uppercase font-bold">
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Lua</span>
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">C</span>
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Python</span>
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Kotlin</span>
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">JavaScript</span>
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">Java</span>
-                <span class="border border-border bg-offblack px-3 py-1.5 hover:text-white transition-colors cursor-default">TypeScript</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Lua</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">C</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Python</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Kotlin</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">JavaScript</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Java</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">TypeScript</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Dart</span>
             </div>
         </section>
 
-        <section class="mb-16">
+        <!-- PROJECTS -->
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
             <h2 class="text-lg font-bold text-white mb-8 flex items-center">
-                <span class="text-dim mr-2">./</span>PROJECTS
+                <span class="section-prefix text-dim mr-2">./</span>PROJECTS
             </h2>
 
             <div class="grid grid-cols-1 gap-6">
 
-                <a href="https://github.com/rmuxnet/SynCinema" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                <a href="https://github.com/rmuxnet/Braska" target="_blank" x-data="buildStatus('rmuxnet', 'Braska')"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
                     <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">SynCinema</h3>
-                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">WEB / FLASK</span>
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            Braska</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span
+                                class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">FLUTTER
+                                / MOBILE</span>
+                        </div>
                     </div>
                     <p class="text-sm text-terminal mb-4 leading-relaxed">
-                        Self-hosted real-time movie watching platform. Synchronized playback, chat, and reactions without the need for subscriptions.
+                        Premium full-stack Flutter app for PS4 remote management. Live CPU/RAM/temp telemetry,
+                        interactive PTY shell, file manager, and native Android Quick Settings tiles for fan &amp; LED
+                        control — no UI required.
                     </p>
-                    <div class="text-xs text-dim font-mono flex gap-3">
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
+                        <span>● Dart</span>
+                        <span>● WebSocket</span>
+                        <span>● Kotlin Tiles</span>
+                        <span>● FastAPI</span>
+                    </div>
+                </a>
+
+                <a href="https://github.com/rmuxnet/ps4-linux-12xx" target="_blank"
+                    x-data="buildStatus('rmuxnet', 'ps4-linux-12xx')"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            Strawberry</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span
+                                class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">KERNEL
+                                / PS4</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Linux 6.18.18 upstreamed for PS4 (12xx). Custom PS4 hardware drivers: Aeolia fan/LED hwmon, SCLK
+                        force, HDMI hotplug. BORE scheduler, Reflex CPU governor, sched-ext, and sky2 networking fixes.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
+                        <span>● Linux 6.18</span>
+                        <span>● BORE</span>
+                        <span>● Reflex gov</span>
+                        <span>● PS4 drivers</span>
+                    </div>
+                </a>
+
+                <a href="https://github.com/rmuxnet/SynCinema" target="_blank"
+                    x-data="buildStatus('rmuxnet', 'SynCinema')"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            SynCinema</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">WEB
+                                / FLASK</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Self-hosted real-time movie watching platform. Synchronized playback, chat, and reactions
+                        without the need for subscriptions.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
                         <span>● Socket.IO</span>
                         <span>● Tailwind</span>
                         <span>● Vanilla JS</span>
                     </div>
                 </a>
 
-                <a href="https://github.com/rmuxv2/pipa-fedora-builder" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                <a href="https://github.com/rmuxnet/Axion-PIPA" target="_blank"
+                    x-data="buildStatus('rmuxnet', 'Axion-PIPA')"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
                     <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">Fedora 42 Port</h3>
-                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">LINUX / ARM64</span>
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            AxionAOSP</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span
+                                class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">ROM</span>
+                        </div>
                     </div>
                     <p class="text-sm text-terminal mb-4 leading-relaxed">
-                        Fedora Linux 42 build images for Xiaomi Pad 6 | POCO F3. KDE/GNOME/SWAY available.
+                        Maintained for Xiaomi Pad 6 (pipa).
                     </p>
-                    <div class="text-xs text-dim font-mono flex gap-3">
-                        <span>● Builder Script</span>
-                        <span>● EDK2</span>
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
+                        <span>● Ver 1.6</span>
+                        <span>● Android 15</span>
                     </div>
                 </a>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <a href="https://github.com/rmuxnet/kernel_xiaomi_sm8250" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
-                        <div class="flex justify-between items-start mb-3">
-                            <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">Blacksun Kernel</h3>
-                            <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">KERNEL</span>
-                        </div>
-                        <p class="text-sm text-terminal mb-4 leading-relaxed">
-                            Fixes oriented kernel for Xiaomi Pad 6. AOSP / COS / HYPEROS.
-                        </p>
-                        <div class="text-xs text-dim font-mono flex gap-3">
-                            <span>● C</span>
-                            <span>● SM8250</span>
-                        </div>
-                    </a>
-
-                    <a href="https://github.com/rmuxnet/Axion-PIPA" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
-                        <div class="flex justify-between items-start mb-3">
-                            <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">AxionAOSP</h3>
-                            <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">ROM</span>
-                        </div>
-                        <p class="text-sm text-terminal mb-4 leading-relaxed">
-                            Maintained for Xiaomi Pad 6 (pipa).
-                        </p>
-                        <div class="text-xs text-dim font-mono flex gap-3">
-                            <span>● Ver 1.6</span>
-                            <span>● Android 15</span>
-                        </div>
-                    </a>
-                </div>
-
                 <div class="border border-border bg-transparent p-6 opacity-80 hover:opacity-100 transition-opacity">
-                    <h3 class="text-white text-sm font-bold mb-4 uppercase tracking-widest border-b border-border pb-2">Misc / Tools</h3>
+                    <h3 class="text-white text-sm font-bold mb-4 uppercase tracking-widest border-b border-border pb-2">
+                        Misc / Tools</h3>
                     <ul class="text-xs text-terminal space-y-2 font-mono">
                         <li class="flex flex-col md:flex-row md:items-center gap-1">
-                            <a href="https://github.com/rmuxv2/Flux" target="_blank" class="text-white hover:underline">> GTA:SA Flux Utility Menu</a>
+                            <a href="https://github.com/rmuxv2/Flux" target="_blank"
+                                class="misc-link text-white hover:underline">> GTA:SA Flux Utility Menu</a>
                             <span class="text-dim hidden md:inline">—</span>
                             <span class="text-dim">Cheat/utility menu for GTA:SA</span>
                         </li>
                         <li class="flex flex-col md:flex-row md:items-center gap-1">
-                            <a href="https://github.com/rmuxv2/Linkomanija-Search" target="_blank" class="text-white hover:underline">> Linkomanija-Search</a>
+                            <a href="https://github.com/rmuxv2/Linkomanija-Search" target="_blank"
+                                class="misc-link text-white hover:underline">> Linkomanija-Search</a>
                             <span class="text-dim hidden md:inline">—</span>
                             <span class="text-dim">qBittorrent plugin</span>
                         </li>
@@ -208,82 +317,65 @@
             </div>
         </section>
 
-        <!-- GUESTBOOK SECTION -->
-        <section class="mb-16">
+        <!-- ACTIVITY LOG -->
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
             <h2 class="text-lg font-bold text-white mb-6 flex items-center">
-                <span class="text-dim mr-2">./</span>GUESTBOOK
+                <span class="section-prefix text-dim mr-2">./</span>RECENT ACTIVITY
             </h2>
 
-            <form id="gb-form" class="border border-border bg-offblack p-6 mb-8 group hover:border-dim transition-colors">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                    <div class="md:col-span-1">
-                        <label class="block text-[10px] text-dim font-bold mb-2 uppercase tracking-wider">/USR/NAME</label>
-                        <input type="text" id="gb-name" required maxlength="20"
-                            class="w-full bg-black border border-border text-white px-3 py-2 text-xs font-mono focus:border-dim focus:outline-none transition-colors placeholder-dim/50" 
-                            placeholder="anon">
-                    </div>
-                    <div class="md:col-span-3">
-                        <label class="block text-[10px] text-dim font-bold mb-2 uppercase tracking-wider">/BIN/MSG</label>
-                        <input type="text" id="gb-msg" required maxlength="200"
-                            class="w-full bg-black border border-border text-terminal px-3 py-2 text-xs font-mono focus:border-dim focus:outline-none transition-colors placeholder-dim/50" 
-                            placeholder="write something...">
-                    </div>
-                </div>
-                <button type="submit" 
-                    class="w-full border border-border bg-black text-dim hover:text-white hover:border-white uppercase text-xs font-bold py-2 transition-all flex justify-center items-center gap-2">
-                    <span>> COMMIT_MESSAGE</span>
-                </button>
-            </form>
+            <div x-data="githubActivity()" class="font-mono text-xs space-y-3">
 
-            <div id="guestbook-log" class="font-mono text-xs space-y-3">
-                <span class="text-dim animate-pulse">Connecting to database...</span>
+                <!-- Loading -->
+                <span x-show="loading" class="text-dim animate-pulse">Fetching data from GitHub nodes...</span>
+
+                <!-- Error -->
+                <span x-show="!loading && error" class="text-dim border-l-2 border-red-900 pl-2">
+                    Error connecting to GitHub nodes.
+                </span>
+
+                <!-- Empty -->
+                <span x-show="!loading && !error && events.length === 0" class="text-dim">
+                    No recent public activity found.
+                </span>
+
+                <!-- Events -->
+                <template x-for="ev in events" :key="ev.date + ev.name + ev.action">
+                    <div
+                        class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 group border-l border-transparent pl-3 hover:border-border transition-colors py-0.5">
+                        <div class="flex items-center gap-2 min-w-fit">
+                            <span class="text-dim">[<span x-text="ev.date"></span>]</span>
+                            <span class="text-dim text-[10px] uppercase tracking-wider hidden md:inline"
+                                x-text="ev.user"></span>
+                        </div>
+                        <div class="truncate w-full">
+                            <span class="text-dim font-bold mr-1" x-text="ev.icon"></span>
+                            <span class="text-terminal" x-text="ev.action"></span>
+                            <a :href="ev.url" target="_blank"
+                                class="text-white hover:underline decoration-1 underline-offset-4 font-bold ml-1"
+                                x-text="ev.name"></a>
+                        </div>
+                    </div>
+                </template>
+
             </div>
-
-            <template id="guestbook-template">
-                <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 border-l border-border pl-3 ml-1 hover:border-dim transition-colors">
-                    <div class="flex items-center gap-2 min-w-fit">
-                        <span class="text-dim">[<span class="gb-date"></span>]</span>
-                        <span class="text-white font-bold gb-name"></span>
-                    </div>
-                    <div class="text-terminal gb-msg break-all"></div>
-                </div>
-            </template>
         </section>
 
-        <!-- ACTIVITY LOG SECTION -->
-        <section class="mb-16">
-            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
-                <span class="text-dim mr-2">./</span>RECENT ACTIVITY
-            </h2>
-            
-            <div id="activity-log" class="font-mono text-xs space-y-3">
-                <span class="text-dim animate-pulse">Fetching data from GitHub nodes...</span>
-            </div>
-            <template id="activity-template">
-                <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 group">
-                    <div class="flex items-center gap-2 min-w-fit">
-                        <span class="text-dim">[<span class="js-date"></span>]</span>
-                        <span class="text-dim text-[10px] uppercase tracking-wider hidden md:inline js-user"></span>
-                    </div>
-                    <div class="truncate w-full">
-                        <span class="text-dim font-bold mr-1 js-icon"></span>
-                        <span class="text-terminal js-action"></span>
-                        <a href="#" target="_blank" class="text-white hover:underline decoration-1 underline-offset-4 font-bold ml-1 js-target"></a>
-                    </div>
-                </div>
-            </template>
-        </section>
-
-        <section class="mb-16">
+        <!-- GUIDES -->
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
             <h2 class="text-lg font-bold text-white mb-8 flex items-center">
-                <span class="text-dim mr-2">./</span>GUIDES
+                <span class="section-prefix text-dim mr-2">./</span>GUIDES
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="https://github.com/pipaDB/info/blob/main/edl_cable.md" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                <a href="https://github.com/pipaDB/info/blob/main/edl_cable.md" target="_blank"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
                     <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">EDL Cable V2</h3>
-                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">HARDWARE</span>
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            EDL Cable V2</h3>
+                        <span
+                            class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">HARDWARE</span>
                     </div>
                     <p class="text-sm text-terminal mb-4 leading-relaxed">
                         Construction guide for the "Deep Flash" cable. Force Qualcomm devices into 9008 mode.
@@ -294,10 +386,13 @@
                     </div>
                 </a>
 
-                <a href="https://github.com/PipaDB/Info/blob/main/edl.md" target="_blank" class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                <a href="https://github.com/PipaDB/Info/blob/main/edl.md" target="_blank"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
                     <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">EDL Flashing</h3>
-                        <span class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">SOFTWARE</span>
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            EDL Flashing</h3>
+                        <span
+                            class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">SOFTWARE</span>
                     </div>
                     <p class="text-sm text-terminal mb-4 leading-relaxed">
                         Software guide for flashing firmware images via Emergency Download Mode.
@@ -310,7 +405,9 @@
             </div>
         </section>
 
-        <section class="pt-8 border-t border-border">
+        <!-- LINKS -->
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal pt-8 border-t border-border">
             <div class="flex flex-wrap gap-x-8 gap-y-4 text-sm font-mono justify-center md:justify-start">
                 <a href="https://github.com/rmuxnet" class="text-dim hover:text-white transition-colors">
                     github/<span class="text-white">rmuxnet</span>
@@ -332,11 +429,10 @@
 
         <footer class="text-center text-[10px] text-dim py-12 flex flex-col items-center gap-2">
             <span>RMUX.ME</span>
-            <span id="live-stats" style="opacity:0.5;"></span>
         </footer>
     </div>
 
-    <script src="script.js"></script>
     <script src="https://x.xkq.workers.dev/track/UgaAlEubQqLX" async></script>
 </body>
+
 </html>
