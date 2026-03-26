@@ -234,6 +234,9 @@ document.addEventListener('alpine:init', () => {
     const THROTTLE = 38; // ms — tuned for smooth but not spammy
 
     document.addEventListener('mousemove', (e) => {
+        // Only run trail if strawberry theme is active
+        if (document.documentElement.getAttribute('data-theme') !== 'strawberry') return;
+
         const now = Date.now();
         if (now - lastSpawn < THROTTLE) return;
         lastSpawn = now;
