@@ -4,6 +4,218 @@
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
+/* ── Default (mono) palette ──────────────────── */
+:root {
+    --strawberry: #e8547a;
+    --strawberry-bright: #ff2d5e;
+    --strawberry-glow: rgba(232, 84, 122, 0.18);
+    --strawberry-subtle: rgba(232, 84, 122, 0.07);
+    --glass-bg: rgba(12, 12, 12, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    /* theme-aware tokens */
+    --bg: #000000;
+    --bg-off: #0a0a0a;
+    --text-main: #cccccc;
+    --text-dim: #555555;
+    --text-hi: #ffffff;
+    --border-c: #171717;
+    --border-dim-c: #555555;
+}
+
+/* ── Strawberry (berry) theme overrides ──────── */
+html[data-theme="strawberry"] {
+    --strawberry: #ff4d78;
+    --strawberry-bright: #ff7096;
+    --strawberry-glow: rgba(255, 77, 120, 0.28);
+    --strawberry-subtle: rgba(255, 77, 120, 0.12);
+    --glass-bg: rgba(20, 3, 10, 0.80);
+    --glass-border: rgba(255, 77, 120, 0.18);
+    --bg: #0d0106;
+    --bg-off: #160310;
+    --text-main: #e8b0c0;
+    --text-dim: #804060;
+    --text-hi: #ffd6e3;
+    --border-c: #350a1e;
+    --border-dim-c: #804060;
+}
+
+/* ── Tailwind utility overrides for berry mode ── */
+html[data-theme="strawberry"],
+html[data-theme="strawberry"] body {
+    background-color: #0d0106 !important;
+    color: #e8b0c0;
+}
+
+html[data-theme="strawberry"] .bg-black {
+    background-color: #0d0106 !important;
+}
+
+html[data-theme="strawberry"] .bg-offblack {
+    background-color: #160310 !important;
+}
+
+html[data-theme="strawberry"] .text-terminal {
+    color: #e8b0c0 !important;
+}
+
+html[data-theme="strawberry"] .text-dim {
+    color: #804060 !important;
+}
+
+html[data-theme="strawberry"] .text-white {
+    color: #ffd6e3 !important;
+}
+
+html[data-theme="strawberry"] .border-border {
+    border-color: #350a1e !important;
+}
+
+html[data-theme="strawberry"] .border-dim {
+    border-color: #804060 !important;
+}
+
+html[data-theme="strawberry"] .border-white {
+    border-color: var(--strawberry) !important;
+}
+
+html[data-theme="strawberry"] .text-border {
+    color: #350a1e !important;
+}
+
+/* Glass surfaces get a deep berry tint */
+html[data-theme="strawberry"] header,
+html[data-theme="strawberry"] a[href^="https://github"].block,
+html[data-theme="strawberry"] a[href^="https://github.com/pipaDB"],
+html[data-theme="strawberry"] a[href^="https://github.com/PipaDB"],
+html[data-theme="strawberry"] div.border.border-border,
+html[data-theme="strawberry"] .release-row,
+html[data-theme="strawberry"] .social-pill,
+html[data-theme="strawberry"] .lang-badge {
+    background: var(--glass-bg) !important;
+    border-color: var(--glass-border) !important;
+}
+
+/* Ambient blobs — much stronger in berry mode */
+html[data-theme="strawberry"] body::after {
+    background:
+        radial-gradient(ellipse 70% 50% at 80% 5%, rgba(255, 77, 120, 0.22) 0%, transparent 70%),
+        radial-gradient(ellipse 55% 40% at 8% 80%, rgba(255, 45, 94, 0.16) 0%, transparent 70%),
+        radial-gradient(ellipse 45% 35% at 50% 45%, rgba(232, 84, 122, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 25% at 30% 15%, rgba(255, 110, 150, 0.08) 0%, transparent 70%);
+}
+
+/* Scrollbar full berry */
+html[data-theme="strawberry"] ::-webkit-scrollbar-track {
+    background: #0d0106;
+}
+
+html[data-theme="strawberry"] ::-webkit-scrollbar-thumb {
+    background: #5a1530;
+}
+
+html[data-theme="strawberry"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--strawberry);
+}
+
+/* Selection stays pink but brighter */
+html[data-theme="strawberry"] ::selection {
+    background: var(--strawberry-bright);
+    color: #fff;
+}
+
+/* Status dot flavour — pink pulse instead of green */
+html[data-theme="strawberry"] .status-dot {
+    background: var(--strawberry);
+    animation-name: pulse-dot-berry;
+}
+
+@keyframes pulse-dot-berry {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 77, 120, 0.6);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(255, 77, 120, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 77, 120, 0);
+    }
+}
+
+/* Hover states in berry mode — project cards */
+html[data-theme="strawberry"] a[href^="https://github"].block:hover {
+    border-color: rgba(255, 77, 120, 0.4) !important;
+    box-shadow: 0 0 24px rgba(255, 77, 120, 0.12) !important;
+}
+
+/* Language badges in berry mode */
+html[data-theme="strawberry"] .lang-badge:hover {
+    color: var(--strawberry-bright) !important;
+    border-color: var(--strawberry) !important;
+    background: rgba(255, 77, 120, 0.1) !important;
+}
+
+/* ============================================
+   THEME TOGGLE BUTTON
+   ============================================ */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 3px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s, background 0.2s;
+    user-select: none;
+    letter-spacing: 0.05em;
+}
+
+.theme-toggle:hover {
+    color: var(--strawberry);
+    border-color: rgba(232, 84, 122, 0.4);
+    background: rgba(232, 84, 122, 0.06);
+    box-shadow: 0 0 12px var(--strawberry-glow);
+}
+
+.theme-toggle-icon {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.theme-toggle-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+@keyframes toggle-pop {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(1.18);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.theme-toggle--pop {
+    animation: toggle-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+
+
 html {
     scroll-behavior: smooth;
 }
@@ -16,15 +228,36 @@ body {
 }
 
 /* ============================================
-   TEXT SELECTION
+   AMBIENT BACKGROUND BLOBS
    ============================================ */
-::selection {
-    background: #ffffff;
-    color: #000000;
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse 55% 35% at 80% 10%, rgba(232, 84, 122, 0.09) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 28% at 15% 75%, rgba(232, 84, 122, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 30% 22% at 50% 50%, rgba(255, 45, 94, 0.04) 0%, transparent 70%);
+}
+
+/* Keep page content above blobs */
+body>div {
+    position: relative;
+    z-index: 1;
 }
 
 /* ============================================
-   CUSTOM SCROLLBAR
+   TEXT SELECTION  — strawberry tint
+   ============================================ */
+::selection {
+    background: var(--strawberry);
+    color: #ffffff;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR — strawberry thumb
    ============================================ */
 ::-webkit-scrollbar {
     width: 4px;
@@ -35,11 +268,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #222;
+    background: #2a1019;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #444;
+    background: var(--strawberry);
 }
 
 /* ============================================
@@ -92,7 +325,7 @@ body::before {
 }
 
 /* ============================================
-   TYPED CURSOR
+   TYPED CURSOR — strawberry pink
    ============================================ */
 @keyframes cursor-blink {
 
@@ -110,12 +343,13 @@ body::before {
     content: '_';
     display: inline-block;
     animation: cursor-blink 1s step-start infinite;
-    color: #ffffff;
+    color: var(--strawberry);
     margin-left: 2px;
+    text-shadow: 0 0 8px var(--strawberry-glow);
 }
 
 /* ============================================
-   STATUS DOT
+   STATUS DOT — keep green (online indicator)
    ============================================ */
 @keyframes pulse-dot {
     0% {
@@ -184,56 +418,148 @@ body::before {
 }
 
 /* ============================================
-   PROJECT CARDS — Glow on Hover
+   GLASSMORPHISM HEADER
+   ============================================ */
+header {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: var(--glass-border) !important;
+    border-radius: 2px;
+    padding: 1.5rem !important;
+}
+
+/* ============================================
+   PROJECT CARDS — Glass + Glow on Hover
    ============================================ */
 a.project-card,
 a[href^="https://github"].block {
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease,
+        background 0.25s ease;
     position: relative;
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    background: var(--glass-bg) !important;
+    border-color: var(--glass-border) !important;
 }
 
 a.project-card:hover,
 a[href^="https://github"].block:hover {
-    border-color: #333 !important;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.04), 0 0 1px rgba(255, 255, 255, 0.08);
-    transform: translateY(-1px);
+    border-color: #303030 !important;
+    box-shadow:
+        0 0 24px rgba(255, 255, 255, 0.04),
+        0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    transform: translateY(-2px);
+    background: rgba(20, 20, 20, 0.7) !important;
+}
+
+/* ── Strawberry card — special pink glow ─────────── */
+a[href*="ps4-linux"] {
+    border-color: rgba(232, 84, 122, 0.2) !important;
+}
+
+a[href*="ps4-linux"]:hover {
+    border-color: var(--strawberry) !important;
+    box-shadow:
+        0 0 32px var(--strawberry-glow),
+        0 0 8px rgba(255, 45, 94, 0.12),
+        inset 0 0 0 1px rgba(232, 84, 122, 0.08);
+}
+
+/* Strawberry label badge */
+a[href*="ps4-linux"] .border.border-border.rounded {
+    border-color: rgba(232, 84, 122, 0.3) !important;
+    color: var(--strawberry) !important;
+}
+
+/* Strawberry project title hover */
+a[href*="ps4-linux"] h3 {
+    transition: color 0.2s ease;
+}
+
+a[href*="ps4-linux"]:hover h3 {
+    color: var(--strawberry) !important;
+}
+
+/* ── Misc / Tools card also gets glass ────────────── */
+div.border.border-border.bg-transparent {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: var(--glass-bg) !important;
 }
 
 /* ============================================
-   LANGUAGE BADGES — Hover Accent
+   GUIDE CARDS — Glass
+   ============================================ */
+a[href^="https://github.com/pipaDB"],
+a[href^="https://github.com/PipaDB"] {
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    background: var(--glass-bg) !important;
+    border-color: var(--glass-border) !important;
+    transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s, background 0.25s;
+}
+
+a[href^="https://github.com/pipaDB"]:hover,
+a[href^="https://github.com/PipaDB"]:hover {
+    border-color: #303030 !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.04);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   LANGUAGE BADGES — Hover to strawberry accent
    ============================================ */
 .lang-badge {
-    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .lang-badge:hover {
-    color: #ffffff !important;
-    border-color: #444 !important;
-    background-color: #111 !important;
+    color: var(--strawberry) !important;
+    border-color: var(--strawberry) !important;
+    background: rgba(232, 84, 122, 0.08) !important;
+    box-shadow: 0 0 10px var(--strawberry-glow);
 }
 
 /* ============================================
-   GUESTBOOK FORM INPUT FOCUS GLOW
+   INPUT FOCUS GLOW
    ============================================ */
 input:focus {
-    box-shadow: 0 0 0 1px #333;
+    box-shadow: 0 0 0 1px var(--strawberry);
+    outline: none;
 }
 
 /* ============================================
-   HEADER ACCENT LINE
+   HEADER ACCENT LINE — strawberry
    ============================================ */
 .header-line::after {
     content: '';
     display: block;
     width: 32px;
-    height: 1px;
-    background: #fff;
+    height: 2px;
+    background: linear-gradient(90deg, var(--strawberry), var(--strawberry-bright));
+    border-radius: 999px;
     margin-top: 10px;
-    transition: width 0.4s ease;
+    transition: width 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 0 8px var(--strawberry-glow);
 }
 
 .header-line:hover::after {
-    width: 64px;
+    width: 72px;
+    box-shadow: 0 0 16px var(--strawberry-glow);
+}
+
+/* ============================================
+   MAINTAINED DEVICES — left border accent
+   ============================================ */
+h2.border-l-2.border-white {
+    border-color: var(--strawberry) !important;
 }
 
 /* ============================================
@@ -252,19 +578,21 @@ input:focus {
 }
 
 .misc-link:hover {
+    color: var(--strawberry) !important;
     padding-left: 4px;
 }
 
 /* ============================================
-   SECTION HEADINGS — prefix glow
+   SECTION HEADINGS — prefix glow (strawberry)
    ============================================ */
 .section-prefix {
     opacity: 0.4;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 section:hover .section-prefix {
-    opacity: 0.7;
+    opacity: 1;
+    color: var(--strawberry);
 }
 
 /* ============================================
@@ -276,11 +604,247 @@ section:hover .section-prefix {
 }
 
 /* ============================================
+   LINKS SECTION — hover to strawberry
+   ============================================ */
+footer~* a:hover span.text-white,
+section a:hover span.text-white {
+    color: var(--strawberry) !important;
+}
+
+/* ============================================
+   SOCIAL PILLS
+   ============================================ */
+.social-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 3px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #666;
+    text-decoration: none;
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.social-pill:hover {
+    transform: translateY(-2px);
+}
+
+.social-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    transition: color 0.2s ease;
+}
+
+.social-label {
+    transition: color 0.2s ease;
+}
+
+/* GitHub — white */
+.social-github {
+    color: #555;
+}
+
+.social-github:hover {
+    color: #ffffff;
+    border-color: #444;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.06);
+}
+
+/* Telegram — blue */
+.social-telegram {
+    color: #555;
+}
+
+.social-telegram:hover {
+    color: #2aabee;
+    border-color: rgba(42, 171, 238, 0.4);
+    background: rgba(42, 171, 238, 0.07);
+    box-shadow: 0 0 16px rgba(42, 171, 238, 0.12);
+}
+
+/* Instagram — strawberry (she'd like that 🍓) */
+.social-instagram {
+    color: #555;
+}
+
+.social-instagram:hover {
+    color: var(--strawberry);
+    border-color: rgba(232, 84, 122, 0.4);
+    background: var(--strawberry-subtle);
+    box-shadow: 0 0 16px var(--strawberry-glow);
+}
+
+/* Reddit — orange */
+.social-reddit {
+    color: #555;
+}
+
+.social-reddit:hover {
+    color: #ff4500;
+    border-color: rgba(255, 69, 0, 0.4);
+    background: rgba(255, 69, 0, 0.07);
+    box-shadow: 0 0 16px rgba(255, 69, 0, 0.12);
+}
+
+/* X / Twitter — white */
+.social-x {
+    color: #555;
+}
+
+.social-x:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.07);
+}
+
+/* ============================================
+   CONTRIBUTION GRAPH
+   ============================================ */
+.contrib-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--glass-border);
+    border-radius: 2px;
+    padding: 12px 14px;
+    background: rgba(8, 3, 5, 0.7);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.contrib-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-width: 640px;
+    /* prevent squishing; container scrolls on mobile */
+    /* Converts the green contribution palette → strawberry pink:
+       grayscale removes original hue → sepia adds warm tone →
+       hue-rotate(290°) lands in the pink/red range →
+       saturation & brightness finalize the look */
+    filter:
+        grayscale(1) sepia(1) hue-rotate(290deg) saturate(8) brightness(0.75);
+}
+
+/* ============================================
+   RELEASE TRACKER ROWS
+   ============================================ */
+.release-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 2px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+    gap: 1rem;
+}
+
+.release-row:hover {
+    border-color: #333;
+    background: rgba(22, 22, 22, 0.75);
+    transform: translateX(3px);
+}
+
+.release-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.release-dot-white {
+    background: #444;
+}
+
+.release-dot-pink {
+    background: var(--strawberry);
+    box-shadow: 0 0 6px var(--strawberry-glow);
+}
+
+.release-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: #555;
+    border: 1px solid #222;
+    border-radius: 2px;
+    padding: 1px 6px;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.release-row:hover .release-tag {
+    color: #ccc;
+    border-color: #333;
+}
+
+.release-tag-pink {
+    color: var(--strawberry) !important;
+    border-color: rgba(232, 84, 122, 0.3) !important;
+}
+
+/* ============================================
+   🍓 CURSOR TRAIL
+   ============================================ */
+.cursor-trail {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    user-select: none;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    line-height: 1;
+    transition: none;
+}
+
+@keyframes trail-float {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(-50%, -260%) scale(0.4);
+    }
+}
+
+.cursor-trail--fade {
+    animation: trail-float 0.65s ease-out forwards;
+}
+
+/* ============================================
    MOBILE TWEAKS
    ============================================ */
 @media (max-width: 640px) {
     body::before {
         display: none;
-        /* scanlines off on mobile to save resources */
+        /* scanlines off on mobile */
+    }
+
+    body::after {
+        opacity: 0.5;
+    }
+
+    header {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 }

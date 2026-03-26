@@ -20,6 +20,7 @@
                         terminal: '#cccccc',
                         dim: '#555555',
                         border: '#171717',
+                        strawberry: '#e8547a',
                     },
                     fontFamily: {
                         mono: ['"JetBrains Mono"', 'Courier New', 'monospace'],
@@ -40,6 +41,16 @@
     <script defer src="script.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Anti-flash: apply saved theme before first paint -->
+    <script>
+            (function () {
+                if (localStorage.getItem('rmux-theme') === 'strawberry') {
+                    document.documentElement.setAttribute('data-theme', 'strawberry');
+                    document.title = '🍓 ' + document.title;
+                }
+            })();
+    </script>
 </head>
 
 <body class="bg-black text-terminal font-mono antialiased min-h-screen overflow-x-hidden">
@@ -55,12 +66,23 @@
                     </h1>
                     <p class="text-dim text-sm flex items-center gap-2 mt-4">
                         <span class="status-dot"></span>
-                        <span>online — hi monkey</span>
+                        <span id="greeting-text">online — hi monkey</span>
                     </p>
                 </div>
-                <div x-data="clock()" class="text-right text-xs text-dim font-mono hidden md:block">
-                    <div x-text="time" class="text-terminal live-clock"></div>
-                    <div class="mt-1">UTC+1</div>
+                <div class="flex items-end gap-4">
+                    <div x-data="clock()" class="text-right text-xs text-dim font-mono hidden md:block">
+                        <div x-text="time" class="text-terminal live-clock"></div>
+                        <div class="mt-1">UTC+1</div>
+                    </div>
+                    <!-- Theme toggle -->
+                    <div x-data="themeToggle()">
+                        <button @click="toggle()" class="theme-toggle"
+                            :title="isStrawberry ? 'Switch to mono' : 'Switch to strawberry mode'"
+                            :aria-label="isStrawberry ? 'Mono theme' : 'Strawberry theme'">
+                            <span class="theme-toggle-icon" x-text="isStrawberry ? '◼' : '🍓'"></span>
+                            <span class="theme-toggle-label" x-text="isStrawberry ? 'mono' : 'berry'"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -216,7 +238,7 @@
                     class="block border border-border bg-offblack p-6 hover:border-dim transition group">
                     <div class="flex justify-between items-start mb-3">
                         <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
-                            Strawberry</h3>
+                            🍓 Strawberry</h3>
                         <div class="flex items-center gap-3">
                             <template x-if="status">
                                 <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
@@ -317,47 +339,33 @@
             </div>
         </section>
 
-        <!-- ACTIVITY LOG -->
+        <!-- LATEST RELEASES -->
         <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
             class="reveal mb-16">
             <h2 class="text-lg font-bold text-white mb-6 flex items-center">
-                <span class="section-prefix text-dim mr-2">./</span>RECENT ACTIVITY
+                <span class="section-prefix text-dim mr-2">./</span>LATEST RELEASES
             </h2>
-
-            <div x-data="githubActivity()" class="font-mono text-xs space-y-3">
-
-                <!-- Loading -->
-                <span x-show="loading" class="text-dim animate-pulse">Fetching data from GitHub nodes...</span>
-
-                <!-- Error -->
-                <span x-show="!loading && error" class="text-dim border-l-2 border-red-900 pl-2">
-                    Error connecting to GitHub nodes.
-                </span>
-
-                <!-- Empty -->
-                <span x-show="!loading && !error && events.length === 0" class="text-dim">
-                    No recent public activity found.
-                </span>
-
-                <!-- Events -->
-                <template x-for="ev in events" :key="ev.date + ev.name + ev.action">
-                    <div
-                        class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-3 group border-l border-transparent pl-3 hover:border-border transition-colors py-0.5">
-                        <div class="flex items-center gap-2 min-w-fit">
-                            <span class="text-dim">[<span x-text="ev.date"></span>]</span>
-                            <span class="text-dim text-[10px] uppercase tracking-wider hidden md:inline"
-                                x-text="ev.user"></span>
-                        </div>
-                        <div class="truncate w-full">
-                            <span class="text-dim font-bold mr-1" x-text="ev.icon"></span>
-                            <span class="text-terminal" x-text="ev.action"></span>
-                            <a :href="ev.url" target="_blank"
-                                class="text-white hover:underline decoration-1 underline-offset-4 font-bold ml-1"
-                                x-text="ev.name"></a>
-                        </div>
-                    </div>
-                </template>
-
+            <div x-data="releaseTracker()" class="font-mono text-xs">
+                <span x-show="loading" class="text-dim animate-pulse">Fetching release data...</span>
+                <span x-show="!loading && releases.length === 0" class="text-dim">No releases found.</span>
+                <div x-show="!loading && releases.length > 0" class="flex flex-col gap-3">
+                    <template x-for="rel in releases" :key="rel.repo">
+                        <a :href="rel.url" target="_blank" class="release-row group">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <span class="release-dot"
+                                    :class="rel.isStrawberry ? 'release-dot-pink' : 'release-dot-white'"></span>
+                                <span class="text-terminal group-hover:text-white transition-colors font-bold truncate"
+                                    x-text="rel.label"></span>
+                            </div>
+                            <div class="flex items-center gap-4 shrink-0">
+                                <span class="release-tag" :class="rel.isStrawberry ? 'release-tag-pink' : ''"
+                                    x-text="rel.tag"></span>
+                                <span class="text-dim" x-text="rel.date"></span>
+                                <span class="text-dim opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                            </div>
+                        </a>
+                    </template>
+                </div>
             </div>
         </section>
 
@@ -408,22 +416,65 @@
         <!-- LINKS -->
         <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
             class="reveal pt-8 border-t border-border">
-            <div class="flex flex-wrap gap-x-8 gap-y-4 text-sm font-mono justify-center md:justify-start">
-                <a href="https://github.com/rmuxnet" class="text-dim hover:text-white transition-colors">
-                    github/<span class="text-white">rmuxnet</span>
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>FIND ME
+            </h2>
+            <div class="flex flex-wrap gap-3">
+
+                <!-- GitHub rmuxnet -->
+                <a href="https://github.com/rmuxnet" target="_blank" class="social-pill social-github">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    </svg>
+                    <span class="social-label">rmuxnet</span>
                 </a>
-                <a href="https://github.com/rmuxv2" class="text-dim hover:text-white transition-colors">
-                    github/<span class="text-white">rmuxv2</span>
+
+                <!-- GitHub rmuxv2 -->
+                <a href="https://github.com/rmuxv2" target="_blank" class="social-pill social-github">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    </svg>
+                    <span class="social-label">rmuxv2</span>
                 </a>
-                <a href="https://t.me/rmuxx" class="text-dim hover:text-white transition-colors">
-                    tg/<span class="text-white">@rmuxx</span>
+
+                <!-- Telegram -->
+                <a href="https://t.me/rmuxx" target="_blank" class="social-pill social-telegram">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                    </svg>
+                    <span class="social-label">@rmuxx</span>
                 </a>
-                <a href="https://instagram.com/rmux0" class="text-dim hover:text-white transition-colors">
-                    ig/<span class="text-white">@rmux0</span>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com/rmux0" target="_blank" class="social-pill social-instagram">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+                    </svg>
+                    <span class="social-label">@rmux0</span>
                 </a>
-                <a href="https://reddit.com/user/aerniq-aka-rmux" class="text-dim hover:text-white transition-colors">
-                    u/<span class="text-white">aerniq-aka-rmux</span>
+
+                <!-- X / Twitter -->
+                <a href="https://x.com/rmux0" target="_blank" class="social-pill social-x">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    <span class="social-label">@rmux0</span>
                 </a>
+
+                <!-- Reddit -->
+                <a href="https://reddit.com/user/aerniq-aka-rmux" target="_blank" class="social-pill social-reddit">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
+                    </svg>
+                    <span class="social-label">aerniq-aka-rmux</span>
+                </a>
+
             </div>
         </section>
 

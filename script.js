@@ -20,9 +20,41 @@ document.addEventListener('alpine:init', () => {
     }));
 
     /* ============================================
+       THEME TOGGLE COMPONENT
+       Switches between mono (default) and
+       strawberry (deep berry) theme.
+       ============================================ */
+    Alpine.data('themeToggle', () => ({
+        isStrawberry: document.documentElement.getAttribute('data-theme') === 'strawberry',
+
+        init() {
+            // Sync tab title on mount in case anti-flash script already set data-theme
+            this._applyTitle(this.isStrawberry);
+        },
+
+        toggle() {
+            this.isStrawberry = !this.isStrawberry;
+            if (this.isStrawberry) {
+                document.documentElement.setAttribute('data-theme', 'strawberry');
+                localStorage.setItem('rmux-theme', 'strawberry');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('rmux-theme', 'mono');
+            }
+            this._applyTitle(this.isStrawberry);
+            // Brief pop animation on the button
+            this.$el.classList.add('theme-toggle--pop');
+            setTimeout(() => this.$el.classList.remove('theme-toggle--pop'), 350);
+        },
+
+        _applyTitle(isBerry) {
+            const base = 'rmux.me \u2014 device maintainer & developer';
+            document.title = isBerry ? '\uD83C\uDF53 ' + base : base;
+        },
+    }));
+
+    /* ============================================
        GITHUB STATS COMPONENT
-       Aggregates repos, stars, followers across
-       both rmuxnet + rmuxv2 accounts.
        ============================================ */
     Alpine.data('githubStats', () => ({
         repos: '—',
@@ -53,11 +85,9 @@ document.addEventListener('alpine:init', () => {
 
     /* ============================================
        BUILD STATUS COMPONENT
-       Fetches the latest GitHub Actions run for
-       a given repo and exposes a status string.
        ============================================ */
     Alpine.data('buildStatus', (owner, repo) => ({
-        status: null,   // 'passing' | 'failing' | 'running' | null
+        status: null,
 
         get dotColor() {
             return {
@@ -92,9 +122,8 @@ document.addEventListener('alpine:init', () => {
                 } else if (run.conclusion === 'failure') {
                     this.status = 'failing';
                 }
-                // cancelled / skipped → leave null (no badge)
             } catch (e) {
-                // silently fail — badge just won't appear
+                // silently fail
             }
         },
     }));
@@ -152,4 +181,82 @@ document.addEventListener('alpine:init', () => {
         },
     }));
 
+    /* ============================================
+       LATEST RELEASES COMPONENT
+       Fetches the latest GitHub release for each
+       key project repo.
+       ============================================ */
+    Alpine.data('releaseTracker', () => ({
+        releases: [],
+        loading: true,
+
+        async init() {
+            const repos = [
+                { owner: 'rmuxnet', repo: 'Braska', label: 'Braska', isStrawberry: false },
+                { owner: 'rmuxnet', repo: 'ps4-linux-12xx', label: '🍓 Strawberry', isStrawberry: true },
+                { owner: 'rmuxnet', repo: 'Axion-PIPA', label: 'AxionAOSP', isStrawberry: false },
+                { owner: 'rmuxnet', repo: 'SynCinema', label: 'SynCinema', isStrawberry: false },
+            ];
+
+            const results = await Promise.allSettled(
+                repos.map(({ owner, repo, label, isStrawberry }) =>
+                    fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`)
+                        .then(r => r.ok ? r.json() : Promise.reject())
+                        .then(data => ({
+                            label,
+                            repo,
+                            isStrawberry,
+                            tag: data.tag_name,
+                            url: data.html_url,
+                            date: new Date(data.published_at).toISOString().slice(0, 10),
+                        }))
+                        .catch(() => null)
+                )
+            );
+
+            this.releases = results
+                .filter(r => r.status === 'fulfilled' && r.value)
+                .map(r => r.value);
+
+            this.loading = false;
+        },
+    }));
+
 });
+
+/* ============================================
+   🍓 STRAWBERRY CURSOR TRAIL
+   Pure vanilla — spawns tiny strawberry emojis
+   that drift upward and fade out.
+   ============================================ */
+(function () {
+    let lastSpawn = 0;
+    const THROTTLE = 38; // ms — tuned for smooth but not spammy
+
+    document.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - lastSpawn < THROTTLE) return;
+        lastSpawn = now;
+
+        const el = document.createElement('span');
+        el.className = 'cursor-trail';
+        el.textContent = '🍓';
+
+        // Slight random horizontal spread
+        const spread = (Math.random() - 0.5) * 16;
+        el.style.left = (e.clientX + spread) + 'px';
+        el.style.top = e.clientY + 'px';
+
+        // Randomise size a little
+        const size = 9 + Math.random() * 6;
+        el.style.fontSize = size + 'px';
+
+        document.body.appendChild(el);
+
+        // Trigger the CSS animation on next frame
+        requestAnimationFrame(() => el.classList.add('cursor-trail--fade'));
+
+        setTimeout(() => el.remove(), 700);
+    });
+})();
+
