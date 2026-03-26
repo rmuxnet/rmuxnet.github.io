@@ -451,6 +451,33 @@ header {
 }
 
 /* ============================================
+   CINNAMON ROLL   (Sanrio)
+   ============================================ */
+.project-cinnamon-roll {
+    position: absolute;
+    top: -48px;
+    right: -28px;
+    width: 95px;
+    height: auto;
+    filter: drop-shadow(0 0 12px var(--strawberry-glow));
+    pointer-events: none;
+    z-index: 20;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.group:hover .project-cinnamon-roll {
+    transform: translateY(-8px) rotate(8deg) scale(1.08);
+}
+
+@media (max-width: 768px) {
+    .project-cinnamon-roll {
+        width: 75px;
+        top: -38px;
+        right: -12px;
+    }
+}
+
+/* ============================================
    PROJECT CARDS — Glass + Glow on Hover
    ============================================ */
 a.project-card,
