@@ -31,8 +31,9 @@
 .boot-content {
     width: 100%;
     max-width: 600px;
-    padding: 2rem;
+    padding: 1.5rem;
     position: relative;
+    box-sizing: border-box;
 }
 
 .boot-lines {
@@ -41,12 +42,14 @@
     line-height: 1.8;
     color: #555;
     min-height: 200px;
+    overflow-x: hidden;
 }
 
 .boot-line {
     opacity: 0;
     animation: boot-line-in 0.15s ease forwards;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .boot-line.ok {
@@ -82,7 +85,7 @@
 .boot-skip {
     position: absolute;
     bottom: 0;
-    right: 2rem;
+    right: 1.5rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     color: #333;
