@@ -1,0 +1,22 @@
+{
+  "name": "rmux, Linux kernel developer",
+  "short_name": "rmux",
+  "description": "Linux kernel work for PS4, PS5, and pipa (Xiaomi Pad 6).",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0e0708",
+  "theme_color": "#0e0708",
+  "icons": [
+    {
+      "src": "https://avatars.githubusercontent.com/u/116457149?s=192&v=4",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "https://avatars.githubusercontent.com/u/116457149?s=512&v=4",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ]
+}

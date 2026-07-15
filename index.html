@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black" data-theme="strawberry">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍓 rmux · device maintainer &amp; developer</title>
+    <meta name="description"
+        content="rmux, developer maintaining Linux kernels for PS4 (🍓 Strawberry) and pipa (Xiaomi Pad 6). Also does PS5 Linux work.">
+    <link rel="canonical" href="https://rmuxnet.github.io/">
+    <meta name="author" content="rmux">
+    <meta name="theme-color" content="#0e0708">
+
+    <link rel="icon" sizes="any" href="https://avatars.githubusercontent.com/u/116457149?s=128&amp;v=4">
+    <link rel="apple-touch-icon" href="https://avatars.githubusercontent.com/u/116457149?s=180&amp;v=4">
+    <link rel="manifest" href="site.webmanifest">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="rmux">
+    <meta property="og:url" content="https://rmuxnet.github.io/">
+    <meta property="og:title" content="">
+    <meta property="og:image" content="https://rmuxnet.github.io/og.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="rmux · Strawberry, my PS4 kernel · PS5 Linux work">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@rmux0">
+    <meta name="twitter:creator" content="@rmux0">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:image" content="https://rmuxnet.github.io/og.png">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "rmux",
+        "alternateName": "rmuxnet",
+        "url": "https://rmuxnet.github.io/",
+        "image": "https://avatars.githubusercontent.com/u/116457149?v=4",
+        "jobTitle": "Device Maintainer & Developer",
+        "knowsAbout": ["Linux Kernel", "PS4 Linux", "PS5 Linux", "AOSP", "Android ROMs"],
+        "sameAs": [
+            "https://github.com/rmuxnet",
+            "https://github.com/rmuxv2",
+            "https://t.me/rmuxx",
+            "https://instagram.com/rmux0",
+            "https://x.com/rmux0",
+            "https://reddit.com/user/aerniq-aka-rmux"
+        ]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        black: '#000000',
+                        offblack: '#0a0a0a',
+                        terminal: '#cccccc',
+                        dim: '#817779',
+                        border: '#171717',
+                        strawberry: '#e8547a',
+                    },
+                    fontFamily: {
+                        mono: ['"JetBrains Mono"', 'Courier New', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script defer src="script.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="bg-black text-terminal font-mono antialiased min-h-screen">
+
+    <div id="loading-screen" aria-hidden="true">
+        <img src="https://www.pngkey.com/png/full/357-3570403_supercutekawaii-cinnamon-roll-from-hello-kitty.png"
+            alt="" class="loading-cinnamon-roll">
+    </div>
+    <script>
+        if (sessionStorage.getItem('rmux-seen-intro')) {
+            document.getElementById('loading-screen').style.display = 'none';
+        } else {
+            sessionStorage.setItem('rmux-seen-intro', '1');
+        }
+    </script>
+
+    <div class="aurora-bg" aria-hidden="true"></div>
+
+    <nav class="nav-pill" aria-label="Primary">
+        <a href="#top" class="nav-pill__word">rmux</a>
+        <ul class="nav-pill__links">
+            <li><a href="#work">Work</a></li>
+            <li><a href="#activity">Activity</a></li>
+            <li><a href="#links">Links</a></li>
+        </ul>
+    </nav>
+
+    <div id="main-content" class="max-w-4xl mx-auto px-6 py-12 main-content-visible">
+
+        <header id="top" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-1 mb-16 border-b border-border pb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                <div class="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                    <img src="https://avatars.githubusercontent.com/u/116457149?v=4" alt="rmux" 
+                        class="w-20 h-20 rounded-xl border border-border bg-offblack shadow-lg shadow-strawberry/5 hover:border-strawberry/50 transition-colors duration-500 p-1">
+                    <div>
+                        <h1 class="text-4xl font-bold tracking-tighter text-white mb-2 header-line glitch-text"
+                            data-text="rmux">rmux
+                        </h1>
+                        <p class="text-dim text-sm flex items-center gap-2 mt-4">
+                            <span class="status-dot"></span>
+                            <span id="greeting-text">online, good day</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-end gap-4">
+                    <div x-data="clock()" class="text-right text-xs text-dim font-mono hidden md:block">
+                        <div x-text="time" class="text-terminal live-clock"></div>
+                        <div class="mt-1">UTC+1</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div x-data="githubStats()"
+            class="mb-12 flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] font-mono text-dim">
+            <span>repos <span class="text-terminal tabular-nums stat-num" x-text="repos">-</span></span>
+            <span class="text-border">·</span>
+            <span>stars <span class="text-terminal tabular-nums stat-num" x-text="stars">-</span></span>
+            <span class="text-border">·</span>
+            <span>followers <span class="text-terminal tabular-nums stat-num" x-text="followers">-</span></span>
+        </div>
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-2 mb-16">
+            <p class="text-terminal leading-relaxed max-w-2xl text-base">
+                I do Linux kernel work for <span class="text-white">PS4</span>, <span
+                    class="text-white">PS5</span>, and <span
+                    class="text-white border-b border-dim border-dotted cursor-default">pipa</span> (Xiaomi Pad 6).
+                <br class="hidden md:block">
+                🍓 <span class="text-strawberry font-bold">Strawberry</span> is my PS4 kernel.
+            </p>
+        </section>
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-2 mb-16">
+            <a href="https://github.com/ps5-linux/ps5-linux-patches" target="_blank" rel="noopener"
+                class="ps5-board block border-l-2 border-strawberry bg-offblack/40 px-6 py-4 hover:bg-offblack/70 transition-colors group">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <h2 class="text-white text-xs font-bold uppercase tracking-widest group-hover:text-strawberry transition-colors">
+                        PS5 Linux
+                    </h2>
+                    <span class="text-[10px] font-mono text-dim">written without owning the console</span>
+                </div>
+                <p class="ps5-note mt-2">
+                    I also do PS5 Linux work, tested on real hardware by supporters. Patches live at
+                    <span class="text-white">ps5-linux/ps5-linux-patches</span>.
+                </p>
+            </a>
+        </section>
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-2 mb-16">
+            <div x-data="discordWidget()"
+                class="discord-card border border-border bg-offblack p-6 rounded flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4 min-w-0">
+                    <span class="discord-avatar" aria-hidden="true">
+                        <img x-show="icon" :src="icon" alt="" loading="lazy">
+                        <svg x-show="!icon" class="discord-glyph" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.099.245.198.372.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z" />
+                        </svg>
+                    </span>
+                    <div class="min-w-0">
+                        <div class="text-white font-bold text-base leading-tight">Linux for PS4 Community</div>
+                        <div class="text-xs text-dim mt-1.5 flex items-center gap-2 flex-wrap">
+                            <template x-if="!error">
+                                <span class="discord-live">
+                                    <span class="discord-dot"></span>
+                                    <span class="text-terminal tabular-nums stat-num" x-text="online">-</span>
+                                    <span>online</span>
+                                    <span class="text-border mx-1">·</span>
+                                    <span class="text-terminal tabular-nums stat-num" x-text="members">-</span>
+                                    <span>members</span>
+                                </span>
+                            </template>
+                            <span x-show="error">install Linux on your PS4, get help &amp; share builds</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="https://discord.gg/TgATpPvNTt" target="_blank" rel="noopener" class="discord-btn shrink-0">
+                    <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.099.245.198.372.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z" />
+                    </svg>
+                    <span>Join the server</span>
+                </a>
+            </div>
+        </section>
+
+        <hr class="glow-divider">
+
+        <div x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal reveal-delay-3 grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+
+            <div>
+                <h2 class="text-white text-xs font-bold mb-6 border-l-2 border-white pl-3 uppercase tracking-widest">
+                    Maintained Devices
+                </h2>
+                <div class="space-y-8">
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">PlayStation 5 Digital</span>
+                            <span class="text-xs text-dim">CFI-1016B</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">825GB + 512GB · FW 6.02</div>
+                            <div class="text-dim">Artix Linux (runit)</div>
+                        </div>
+                    </div>
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">PlayStation 4 Fat</span>
+                            <span class="text-xs text-dim">CUH-1116A</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">500GB · FW 12.52</div>
+                            <div class="text-dim">Artix Linux (runit)</div>
+                        </div>
+                    </div>
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">Xiaomi Pad 6</span>
+                            <span class="text-xs text-dim">pipa</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">8GB / 256GB</div>
+                            <div class="text-dim">Artix Linux (runit) · Blacksun Kernel</div>
+                        </div>
+                    </div>
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">POCO F3</span>
+                            <span class="text-xs text-dim">alioth</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">8GB / 256GB</div>
+                            <div class="text-dim">Artix Linux (runit) · kernel work</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-white text-xs font-bold mb-6 border-l-2 border-dim pl-3 uppercase tracking-widest">
+                    Personal Hardware
+                </h2>
+                <div class="space-y-8">
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">Asus TUF Gaming A15</span>
+                            <span class="text-xs text-dim">FA507NV</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">16GB / 1TB</div>
+                            <div class="text-dim">Artix Linux (runit)</div>
+                        </div>
+                    </div>
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">Redmi Turbo 4 Pro</span>
+                            <span class="text-xs text-dim">onyx</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">12GB / 256GB</div>
+                            <div class="text-dim">HyperOS 3</div>
+                        </div>
+                    </div>
+                    <div class="group">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <span class="text-white font-bold text-lg">Redmi 12</span>
+                            <span class="text-xs text-dim">heat</span>
+                        </div>
+                        <div
+                            class="text-xs text-terminal pl-3 border-l border-border ml-1 group-hover:border-dim transition-colors">
+                            <div class="mb-1">8GB / 256GB</div>
+                            <div class="text-dim">HyperOS 3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>CODING LANGUAGES
+            </h2>
+            <div class="flex flex-wrap gap-2 text-xs text-terminal uppercase font-bold">
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">C</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Lua</span>
+                <span class="lang-badge border border-border bg-offblack px-3 py-1.5 cursor-default">Python</span>
+            </div>
+        </section>
+
+        <hr class="glow-divider">
+
+        <section id="work" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16 scroll-mt-24">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>PROJECTS
+            </h2>
+
+            <div id="project-filters" class="flex flex-wrap gap-2 mb-8">
+                <button class="proj-chip is-active" data-filter="all">all</button>
+                <button class="proj-chip" data-filter="kernel">kernel</button>
+                <button class="proj-chip" data-filter="rom">rom</button>
+                <button class="proj-chip" data-filter="tools">tools</button>
+            </div>
+
+            <div id="projects-grid" class="grid grid-cols-1 gap-6">
+
+                <a href="https://github.com/rmuxnet/ps4-linux-12xx" target="_blank" rel="noopener" data-cat="kernel"
+                    x-data="buildStatus('rmuxnet', 'ps4-linux-12xx')" x-intersect.once="$el.classList.add('visible')"
+                    class="project-item card-reveal block border border-border bg-offblack p-6 hover:border-dim transition group relative">
+                    <img src="https://www.pngkey.com/png/full/357-3570403_supercutekawaii-cinnamon-roll-from-hello-kitty.png"
+                        alt="Cinnamon Roll" class="project-cinnamon-roll">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            🍓 Strawberry</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span
+                                class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">KERNEL
+                                / PS4</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        My PS4 kernel fork, with a lot of improvements for stability and performance.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
+                        <span x-data="downloadCount('rmuxnet', 'ps4-linux-12xx')" x-show="ready"
+                            class="text-strawberry" style="display:none">●&nbsp;⬇&nbsp;<span
+                                class="tabular-nums" x-text="formatted">0</span>&nbsp;downloads</span>
+                        <span>● Baikal/Aeolia/Belize</span>
+                    </div>
+                    <div x-data="repoMeta('rmuxnet', 'ps4-linux-12xx')" x-show="loaded" style="display:none"
+                        class="repo-meta mt-4 pt-3 border-t border-border">
+                        <div class="flex items-center gap-4 text-[11px] font-mono text-dim mb-2">
+                            <span class="flex items-center gap-1"><span class="repo-star">★</span><span
+                                    class="text-terminal tabular-nums" x-text="stars">0</span></span>
+                            <span x-show="updated">updated <span class="text-terminal" x-text="updated"></span></span>
+                        </div>
+                        <div class="lang-bar" x-show="langs.length">
+                            <template x-for="l in langs" :key="l.name">
+                                <span class="lang-seg" :style="`width:${l.pct}%;background:${l.color}`"
+                                    :title="`${l.name} ${l.pct}%`"></span>
+                            </template>
+                        </div>
+                        <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-[10px] text-dim" x-show="langs.length">
+                            <template x-for="l in langs.slice(0, 4)" :key="l.name">
+                                <span class="flex items-center gap-1.5"><span class="lang-dot"
+                                        :style="`background:${l.color}`"></span><span class="text-terminal"
+                                        x-text="l.name"></span><span class="opacity-60"
+                                        x-text="l.pct + '%'"></span></span>
+                            </template>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/rmuxnet/Axion-PIPA" target="_blank" rel="noopener" data-cat="rom"
+                    x-data="buildStatus('rmuxnet', 'Axion-PIPA')" x-intersect.once="$el.classList.add('visible')"
+                    class="project-item card-reveal block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            AxionAOSP</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span
+                                class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">ROM</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Maintained for Xiaomi Pad 6 (pipa).
+                    </p>
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
+                        <span>● Ver 1.6</span>
+                        <span>● Android 15</span>
+                    </div>
+                    <div x-data="repoMeta('rmuxnet', 'Axion-PIPA')" x-show="loaded" style="display:none"
+                        class="repo-meta mt-4 pt-3 border-t border-border">
+                        <div class="flex items-center gap-4 text-[11px] font-mono text-dim mb-2">
+                            <span class="flex items-center gap-1"><span class="repo-star">★</span><span
+                                    class="text-terminal tabular-nums" x-text="stars">0</span></span>
+                            <span x-show="updated">updated <span class="text-terminal" x-text="updated"></span></span>
+                        </div>
+                        <div class="lang-bar" x-show="langs.length">
+                            <template x-for="l in langs" :key="l.name">
+                                <span class="lang-seg" :style="`width:${l.pct}%;background:${l.color}`"
+                                    :title="`${l.name} ${l.pct}%`"></span>
+                            </template>
+                        </div>
+                        <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-[10px] text-dim" x-show="langs.length">
+                            <template x-for="l in langs.slice(0, 4)" :key="l.name">
+                                <span class="flex items-center gap-1.5"><span class="lang-dot"
+                                        :style="`background:${l.color}`"></span><span class="text-terminal"
+                                        x-text="l.name"></span><span class="opacity-60"
+                                        x-text="l.pct + '%'"></span></span>
+                            </template>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://github.com/PipaDB/OrangeFox-Action-Builder" target="_blank" rel="noopener" data-cat="rom"
+                    x-data="buildStatus('PipaDB', 'OrangeFox-Action-Builder')"
+                    x-intersect.once="$el.classList.add('visible')"
+                    class="project-item card-reveal block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            OrangeFox Recovery</h3>
+                        <div class="flex items-center gap-3">
+                            <template x-if="status">
+                                <span class="text-[10px] font-mono flex items-center gap-1.5" :class="textColor">
+                                    <span class="inline-block w-1.5 h-1.5 rounded-full" :class="dotColor"></span>
+                                    <span x-text="status"></span>
+                                </span>
+                            </template>
+                            <span
+                                class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">RECOVERY</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        OrangeFox custom recovery for the Xiaomi Pad 6 (pipa), built with a GitHub Actions pipeline.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex flex-wrap gap-3">
+                        <span>● pipa</span>
+                        <span>● Recovery</span>
+                        <span>● GitHub Actions</span>
+                    </div>
+                    <div x-data="repoMeta('PipaDB', 'OrangeFox-Action-Builder')" x-show="loaded" style="display:none"
+                        class="repo-meta mt-4 pt-3 border-t border-border">
+                        <div class="flex items-center gap-4 text-[11px] font-mono text-dim mb-2">
+                            <span class="flex items-center gap-1"><span class="repo-star">★</span><span
+                                    class="text-terminal tabular-nums" x-text="stars">0</span></span>
+                            <span x-show="updated">updated <span class="text-terminal" x-text="updated"></span></span>
+                        </div>
+                        <div class="lang-bar" x-show="langs.length">
+                            <template x-for="l in langs" :key="l.name">
+                                <span class="lang-seg" :style="`width:${l.pct}%;background:${l.color}`"
+                                    :title="`${l.name} ${l.pct}%`"></span>
+                            </template>
+                        </div>
+                        <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2 text-[10px] text-dim" x-show="langs.length">
+                            <template x-for="l in langs.slice(0, 4)" :key="l.name">
+                                <span class="flex items-center gap-1.5"><span class="lang-dot"
+                                        :style="`background:${l.color}`"></span><span class="text-terminal"
+                                        x-text="l.name"></span><span class="opacity-60"
+                                        x-text="l.pct + '%'"></span></span>
+                            </template>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="project-item border border-border bg-transparent p-6 opacity-80 hover:opacity-100 transition-opacity"
+                    x-intersect.once="$el.style.opacity = '1'" data-cat="tools">
+                    <h3 class="text-white text-sm font-bold mb-4 uppercase tracking-widest border-b border-border pb-2">
+                        Misc / Tools</h3>
+                    <ul class="text-xs text-terminal space-y-2 font-mono">
+                        <li class="flex flex-col md:flex-row md:items-center gap-1">
+                            <a href="https://github.com/Project-Pyrrha/Pyrrha" target="_blank" rel="noopener"
+                                class="misc-link text-white hover:underline">> Pyrrha</a>
+                            <span class="text-dim hidden md:inline">·</span>
+                            <span class="text-dim">GTA:SA mod menu</span>
+                        </li>
+                        <li class="flex flex-col md:flex-row md:items-center gap-1">
+                            <a href="https://github.com/rmuxv2/Linkomanija-Search" target="_blank" rel="noopener"
+                                class="misc-link text-white hover:underline">> Linkomanija-Search</a>
+                            <span class="text-dim hidden md:inline">·</span>
+                            <span class="text-dim">qBittorrent plugin</span>
+                        </li>
+                        <li class="flex flex-col md:flex-row md:items-center gap-1">
+                            <a href="https://github.com/rmuxnet/PKGBUILDs-alioth" target="_blank" rel="noopener"
+                                class="misc-link text-white hover:underline">> PKGBUILDs-alioth</a>
+                            <span class="text-dim hidden md:inline">·</span>
+                            <span class="text-dim">Armtix builds + PKGBUILDs for alioth</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>LATEST RELEASES
+            </h2>
+            <div x-data="releaseTracker()" class="font-mono text-xs">
+                <span x-show="loading" class="text-dim animate-pulse">Fetching release data...</span>
+                <span x-show="!loading && releases.length === 0" class="text-dim">No releases found.</span>
+                <div x-show="!loading && releases.length > 0" class="flex flex-col gap-3">
+                    <template x-for="rel in releases" :key="rel.repo">
+                        <a :href="rel.url" target="_blank" rel="noopener" class="release-row group">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <span class="release-dot"
+                                    :class="rel.isStrawberry ? 'release-dot-pink' : 'release-dot-white'"></span>
+                                <span class="text-terminal group-hover:text-white transition-colors font-bold truncate"
+                                    x-text="rel.label"></span>
+                            </div>
+                            <div class="flex items-center gap-4 shrink-0">
+                                <span class="release-tag" :class="rel.isStrawberry ? 'release-tag-pink' : ''"
+                                    x-text="rel.tag"></span>
+                                <span class="text-dim" x-text="rel.date"></span>
+                                <span class="text-dim opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <section id="activity" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16 scroll-mt-24">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>RECENT ACTIVITY
+            </h2>
+            <div x-data="githubActivity()" class="font-mono text-xs">
+                <span x-show="loading" class="text-dim animate-pulse">Fetching activity...</span>
+                <span x-show="!loading && error" class="text-dim">Activity feed unavailable right now.</span>
+                <span x-show="!loading && !error && events.length === 0" class="text-dim">No recent public activity.</span>
+                <div x-show="!loading && events.length > 0" class="flex flex-col gap-2">
+                    <template x-for="ev in events" :key="ev.url + ev.date + ev.action">
+                        <a :href="ev.url" target="_blank" rel="noopener" class="activity-row group">
+                            <span class="activity-icon" x-text="ev.icon"></span>
+                            <span class="text-dim shrink-0" x-text="ev.user"></span>
+                            <span class="text-terminal shrink-0" x-text="ev.action"></span>
+                            <span class="text-white group-hover:underline truncate" x-text="ev.name"></span>
+                            <span class="text-dim ml-auto shrink-0 tabular-nums" x-text="ev.date"></span>
+                            <span class="text-dim shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                        </a>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>CONTRIBUTIONS
+            </h2>
+            <div class="contrib-graph border border-border bg-offblack rounded p-4 overflow-x-auto">
+                <img src="https://ghchart.rshah.org/e8547a/rmuxnet"
+                    alt="rmuxnet GitHub contribution graph" loading="lazy" class="contrib-img"
+                    onerror="this.closest('section').style.display='none'">
+            </div>
+            <p class="text-[11px] text-dim mt-2">live contribution graph · <span class="text-terminal">@rmuxnet</span>
+            </p>
+        </section>
+
+        <hr class="glow-divider">
+
+        <section x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
+            <h2 class="text-lg font-bold text-white mb-8 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>GUIDES
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="https://github.com/pipaDB/info/blob/main/edl_cable.md" target="_blank" rel="noopener"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            EDL Cable V2</h3>
+                        <span
+                            class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">HARDWARE</span>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Construction guide for the "Deep Flash" cable. Force Qualcomm devices into 9008 mode.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex gap-3">
+                        <span>● DIY</span>
+                        <span>● Unbricking</span>
+                    </div>
+                </a>
+
+                <a href="https://github.com/PipaDB/Info/blob/main/edl.md" target="_blank" rel="noopener"
+                    class="block border border-border bg-offblack p-6 hover:border-dim transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="text-white font-bold text-lg group-hover:underline decoration-1 underline-offset-4">
+                            EDL Flashing</h3>
+                        <span
+                            class="text-[10px] border border-border rounded px-2 py-1 text-dim tracking-wider">SOFTWARE</span>
+                    </div>
+                    <p class="text-sm text-terminal mb-4 leading-relaxed">
+                        Software guide for flashing firmware images via Emergency Download Mode.
+                    </p>
+                    <div class="text-xs text-dim font-mono flex gap-3">
+                        <span>● QFIL</span>
+                        <span>● Firehose</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="support" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal mb-16">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>SUPPORT
+            </h2>
+            <div
+                class="border-l-2 border-strawberry bg-offblack/40 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-6 kofi-card">
+                <div class="cat" aria-hidden="true">
+                    <div class="cat-sprite"></div>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm text-terminal leading-relaxed max-w-xl">
+                        Everything I build is open source. I also do PS5 Linux work now, thanks to the folks who
+                        funded the <span class="text-strawberry font-bold">low-firmware PS5</span> below.
+                        Donations are always accepted, they go straight back into PS4/PS5 Linux work, and sometimes
+                        toward new tech. Currently trying to buy a
+                        <span class="text-white">OnePlus 15T (12GB/256GB)</span>. ☕
+                    </p>
+                    <div class="mt-5 max-w-xl">
+                        <p class="text-[10px] text-dim font-mono mb-2.5 uppercase tracking-wider">
+                            <span class="text-strawberry">16 supporters</span> · thank you 🍓
+                        </p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="supporter-chip">TheChillDawg</span>
+                            <span class="supporter-chip">ArabPixel</span>
+                            <span class="supporter-chip">MeatThrob</span>
+                            <span class="supporter-chip">brongolis stimmios</span>
+                            <span class="supporter-chip">tc</span>
+                            <span class="supporter-chip">davber</span>
+                            <span class="supporter-chip">darkmemarko</span>
+                            <span class="supporter-chip">Blackbone</span>
+                            <span class="supporter-chip">xythera</span>
+                            <span class="supporter-chip">tutpyhoon</span>
+                            <span class="supporter-chip">frnk</span>
+                            <span class="supporter-chip">hassle</span>
+                            <span class="supporter-chip">D</span>
+                            <span class="supporter-chip">hipmp5</span>
+                            <span class="supporter-chip">Mihail Atanasov</span>
+                            <span class="supporter-chip supporter-anon">+ 1 anonymous</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kofi-embed shrink-0">
+                    <a href="https://ko-fi.com/rmuxnet" target="_blank" rel="noopener" class="kofi-btn">
+                        <svg class="kofi-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M20 3H4v10a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4v-3h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z" />
+                        </svg>
+                        <span>Support on Ko-fi</span>
+                    </a>
+                </div>
+                <script>
+                    (function () {
+                        var s = document.createElement('script');
+                        s.src = 'https://storage.ko-fi.com/cdn/widget/Widget_2.js';
+                        s.async = true;
+                        s.onload = function () {
+                            try {
+                                kofiwidget2.init('Support me on Ko-fi', '#e8547a', 'M4M11SOKSD');
+                                var c = document.querySelector('.kofi-embed');
+                                if (c) c.innerHTML = kofiwidget2.getHTML();
+                            } catch (e) { }
+                        };
+                        document.head.appendChild(s);
+                    })();
+                </script>
+            </div>
+        </section>
+
+        <section id="links" x-data="{ shown: false }" x-intersect.once="shown = true" :class="shown ? 'visible' : ''"
+            class="reveal pt-8 border-t border-border scroll-mt-24">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center">
+                <span class="section-prefix text-dim mr-2">./</span>FIND ME
+            </h2>
+            <div class="flex flex-wrap gap-3">
+
+                <a href="https://github.com/rmuxnet" target="_blank" rel="noopener" class="social-pill social-github">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    </svg>
+                    <span class="social-label">rmuxnet</span>
+                </a>
+
+                <a href="https://github.com/rmuxv2" target="_blank" rel="noopener" class="social-pill social-github">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                    </svg>
+                    <span class="social-label">rmuxv2</span>
+                </a>
+
+                <a href="https://t.me/rmuxx" target="_blank" rel="noopener" class="social-pill social-telegram">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                    </svg>
+                    <span class="social-label">@rmuxx</span>
+                </a>
+
+                <span class="social-pill social-discord cursor-pointer" role="button" tabindex="0"
+                    title="Discord, click to copy username"
+                    onclick="if(navigator.clipboard){navigator.clipboard.writeText('7xkq')}const l=this.querySelector('.social-label'),o=l.textContent;l.textContent='copied!';setTimeout(()=>l.textContent=o,1200)">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .079.009c.12.099.245.198.372.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z" />
+                    </svg>
+                    <span class="social-label">7xkq</span>
+                </span>
+
+                <a href="https://instagram.com/rmux0" target="_blank" rel="noopener" class="social-pill social-instagram">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+                    </svg>
+                    <span class="social-label">@rmux0</span>
+                </a>
+
+                <a href="https://x.com/rmux0" target="_blank" rel="noopener" class="social-pill social-x">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    <span class="social-label">@rmux0</span>
+                </a>
+
+                <a href="https://reddit.com/user/aerniq-aka-rmux" target="_blank" rel="noopener" class="social-pill social-reddit">
+                    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path
+                            d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
+                    </svg>
+                    <span class="social-label">aerniq-aka-rmux</span>
+                </a>
+
+            </div>
+        </section>
+
+        <footer class="footer-line pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] text-dim">
+            <span>rmux, device maintainer &amp; developer</span>
+            <span id="live-stats" class="live-stats" style="opacity:0"></span>
+            <span id="session-uptime" class="session-uptime">session 0s</span>
+        </footer>
+    </div>
+
+    <script src="https://x.xkq.workers.dev/track/UgaAlEubQqLX" async></script>
+</body>
+
+</html>

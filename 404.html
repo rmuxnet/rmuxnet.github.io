@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-black" data-theme="strawberry">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — signal lost · rmux</title>
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#0e0708">
+    <link rel="icon" sizes="any" href="https://avatars.githubusercontent.com/u/116457149?s=128&amp;v=4">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        black: '#000000', offblack: '#0a0a0a', terminal: '#cccccc',
+                        dim: '#817779', border: '#171717', strawberry: '#e8547a',
+                    },
+                    fontFamily: { mono: ['"JetBrains Mono"', 'Courier New', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-black text-terminal font-mono antialiased min-h-screen flex items-center justify-center px-6">
+
+    <div class="aurora-bg" aria-hidden="true"></div>
+
+    <main class="relative z-10 max-w-lg w-full text-center main-content-visible">
+        <h1 class="text-7xl md:text-8xl font-bold tracking-tighter text-white mb-4 glitch-text" data-text="404">404</h1>
+
+        <p class="text-dim text-sm mb-8">
+            <span class="status-dot"></span>
+            offline — that path doesn't exist
+        </p>
+
+        <div class="border border-border bg-offblack/70 rounded p-4 text-left text-xs leading-relaxed mb-8 mx-auto max-w-md">
+            <div class="text-dim"><span class="text-terminal">rmux@me</span>:<span class="text-terminal">~</span>$ cat <span class="text-white" id="bad-path">requested-page</span></div>
+            <div class="text-strawberry mt-1">cat: requested-page: No such file or directory</div>
+            <div class="text-dim mt-1"><span class="text-terminal">rmux@me</span>:<span class="text-terminal">~</span>$ cd / &amp;&amp; ./home<span class="footer-prompt-cursor"></span></div>
+        </div>
+
+        <a href="/"
+            class="social-pill social-github inline-flex"
+            style="text-decoration:none">
+            <span class="social-label">← return home</span>
+        </a>
+    </main>
+
+    <script>
+        var el = document.getElementById('bad-path');
+        if (el) el.textContent = (location.pathname + location.search).slice(1) || 'requested-page';
+
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            var g = document.querySelector('.glitch-text');
+            setInterval(function () {
+                if (!g) return;
+                g.classList.add('glitching');
+                setTimeout(function () { g.classList.remove('glitching'); }, 300);
+            }, 3500);
+        }
+    </script>
+</body>
+
+</html>
